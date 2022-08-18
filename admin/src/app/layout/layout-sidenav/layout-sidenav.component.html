@@ -1,0 +1,90 @@
+<sidenav [orientation]="orientation" [ngClass]="getClasses()">
+  <!-- Inner -->
+  <div
+    class="sidenav-inner"
+    [ngClass]="{ 'py-1': orientation !== 'horizontal' }"
+  >
+    <sidenav-router-link
+      icon="fas fa-chart-bar"
+      route="/dashboard"
+      [active]="isActive('/dashboard')"
+      >Dashboard</sidenav-router-link
+    >
+
+    <sidenav-router-link
+      icon="fas fa-users"
+      route="/customer"
+      [active]="isActive('/customer')"
+    >
+      Users
+    </sidenav-router-link>
+    <sidenav-router-link
+    *ngIf="isAdmin()"
+      icon="fas fa-utensils"
+      route="/food-type"
+      [active]="isActive('/food-type')"
+      >Food Types</sidenav-router-link
+    >
+    <sidenav-router-link
+    *ngIf="isAdmin()"
+      icon="fas fa-hotel"
+      route="/restaurant"
+      [active]="isActive('/restaurant')"
+      >Restaurant</sidenav-router-link
+    >
+    <sidenav-router-link
+    *ngIf="!isAdmin()"
+      icon="fas fa-utensils"
+      route="/reservation/0"
+      [active]="isActive('/reservation/0')"
+      >Reservations</sidenav-router-link
+    >
+    <sidenav-router-link
+    *ngIf="isAdmin()"
+      icon="fas fa-headset"
+      route="/support"
+      [active]="isActive('/support')"
+      >Support</sidenav-router-link
+    >
+    <sidenav-router-link
+    *ngIf="isAdmin()"
+      icon="fas fa-id-card"
+      route="/contact-us"
+      [active]="isActive('/contact-us')"
+      >Contact Us</sidenav-router-link
+    >
+    <sidenav-router-link
+      icon="fas fa-sign-out-alt"
+      [active]="isActive('/')"
+      (click)="openModal(logOutModal, null, null)"
+      >Log Out</sidenav-router-link
+    >
+  </div>
+</sidenav>
+
+<ng-template #logOutModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="editLabel">Log Out</h5>
+    <button
+      type="button"
+      class="close"
+      (click)="modal.dismiss()"
+      aria-label="Close"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body p-0">
+    <p style="padding: 15px 25px">Are you sure you want to log Out</p>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">
+        Close
+      </button>
+      <button type="submit" class="btn btn-danger" (click)="logout()">
+        Log Out
+      </button>
+    </div>
+  </div>
+</ng-template>

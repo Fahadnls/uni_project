@@ -1,0 +1,288 @@
+<h4 class="font-weight-bold py-3 px-2 mb-4">
+  <a *ngIf="isAdmin()" (click)="back()"> <i class="back fas fa-chevron-left mr-4"></i></a>
+  <i class="fas fa-utensils"></i>
+  &nbsp; Reservation
+</h4>
+
+<div class="demo-vertical-spacing" id="nav-dropdowns-demo">
+  <ul class="nav nav-tabs nav-responsive-xl">
+    <li class="nav-item">
+      <a
+        [class]="
+          activeTab == 'Reserved'
+            ? 'active nav-link text-warning'
+            : 'nav-link text-warning'
+        "
+        (click)="tabChange('Reserved')"
+        href="javascript:void(0)"
+      >
+        Reserved &nbsp;
+        <span
+          *ngIf="pendingReservation.length !== 0"
+          class="badge badge-outline-warning"
+          >{{ pendingReservation.length }}</span
+        >
+      </a>
+    </li>
+    <li class="nav-item">
+      <a
+        [class]="
+          activeTab == 'Completed'
+            ? 'active nav-link text-success'
+            : 'nav-link text-success'
+        "
+        (click)="tabChange('Completed')"
+        href="javascript:void(0)"
+      >
+        Completed &nbsp;
+        <span
+          *ngIf="CompletedReservation.length != 0"
+          class="badge badge-outline-success"
+          >{{ CompletedReservation.length }}</span
+        >
+      </a>
+    </li>
+    <li class="nav-item">
+      <a
+        [class]="
+          activeTab == 'Cancelled'
+            ? 'active nav-link text-danger'
+            : 'nav-link text-danger'
+        "
+        (click)="tabChange('Cancelled')"
+        href="javascript:void(0)"
+      >
+        Cancelled &nbsp;
+        <span
+          *ngIf="cancelReservation.length !== 0"
+          class="badge badge-outline-danger"
+          >{{ cancelReservation.length }}</span
+        >
+      </a>
+    </li>
+  </ul>
+</div>
+
+<div class="card p-3" *ngIf="loading">
+  <div class="sk-wave sk-primary">
+    <div class="sk-rect sk-rect1"></div>
+    <div class="sk-rect sk-rect2"></div>
+    <div class="sk-rect sk-rect3"></div>
+    <div class="sk-rect sk-rect4"></div>
+    <div class="sk-rect sk-rect5"></div>
+  </div>
+  <h5 class="text-center mb-0">LOADING...</h5>
+</div>
+
+<div class="card" *ngIf="!loading && activeTab == 'Reserved'">
+  <h3
+    *ngIf="pendingReservation.length === 0"
+    class="text-center my-5 text-capitalize"
+  >
+    <i class="fas fa-utensils mb-3" style="font-size: 40px"></i>
+    <br />
+    No <span class="text-warning">{{ activeTab }}</span> Reservation Found!
+  </h3>
+
+  <table *ngIf="pendingReservation.length !== 0" class="table table-bordered">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">User</th>
+        <th scope="col">Reservation Code</th>
+        <th scope="col">Table No</th>
+        <th scope="col">Time</th>
+        <th scope="col">Date</th>
+        <th scope="col">Seat / Area</th>
+        <th  scope="col">Additional Note</th>
+        <th class="text-center" scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of pendingReservation; index as i">
+        <th scope="row">{{ i + 1 }}</th>
+        <td class="text-capitalize">
+          <img
+            class="text-capitalize profile d-inline-block ui-w-30 mr-2"
+            [src]="
+              item.user?.profileImage
+                ? url + item.user?.profileImage
+                : '../../assets/vendor/img/person.png'
+            "
+            alt=""
+          />
+          {{ item.user?.fullName }}
+        </td>
+        <td>#{{ item?.tableBookingCode }}</td>
+        <td>#{{ item?.restaurant_table?.tableNumber }}</td>
+        <td>
+          {{ item?.slotTo | date: "hh:mm a" }} to
+          {{ item?.slotForm | date: "h:m a" }}
+        </td>
+        <td class="text-capitalize">
+          {{ item?.reservationDate | date: "mediumDate" }}
+        </td>
+        <td >{{ item?.seats }} / {{ item?.seatingArea }}</td>
+        <td [class]="item?.additionalNote == ''? 'text-center':''">{{ item?.additionalNote == ''? '-':item?.additionalNote }}</td>
+        <td  class="text-center">
+          <a  (click)="openModal(cancelRes, item, i)" class="btn btn-danger text-white btn-xs md-btn-flat m-1 p-1">
+            <i class="fas fa-times text-white"></i> Cancel
+          </a>
+          <a (click)="completed(item,i)" class="btn btn-success text-white  btn-xs md-btn-flat m-1 py-1"> Completed </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="card" *ngIf="!loading && activeTab == 'Completed'">
+  <h3
+    *ngIf="CompletedReservation.length === 0"
+    class="text-center my-5 text-capitalize"
+  >
+    <i class="fas fa-utensils mb-3" style="font-size: 40px"></i>
+    <br />
+    No <span class="text-success">{{ activeTab }}</span> Reservation Found!
+  </h3>
+
+  <table
+    *ngIf="CompletedReservation.length !== 0"
+    class="table table-bordered"
+  >
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">User</th>
+        <th scope="col">Reservation Code</th>
+        <th scope="col">Time</th>
+        <th scope="col">Date</th>
+        <th scope="col">Seat / Area</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of CompletedReservation; index as i">
+        <th scope="row">{{ i + 1 }}</th>
+        <td class="text-capitalize">
+          <img
+            class="text-capitalize profile d-inline-block ui-w-30 mr-2"
+            [src]="
+              item.user?.profileImage
+                ? url + item.user?.profileImage
+                : '../../assets/vendor/img/person.png'
+            "
+            alt=""
+          />
+          {{ item.user?.fullName }}
+        </td>
+        <td>#{{ item?.tableBookingCode }}</td>
+        <td>
+          {{ item?.slotTo | date: "hh:mm a" }} to
+          {{ item?.slotForm | date: "h:m a" }}
+        </td>
+        <td class="text-capitalize">
+          {{ item?.reservationDate | date: "mediumDate" }}
+        </td>
+        <td>{{ item?.seats }} / {{ item?.seatingArea }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="card" *ngIf="!loading && activeTab == 'Cancelled'">
+  <h3
+    *ngIf="cancelReservation.length === 0"
+    class="text-center my-5 text-capitalize"
+  >
+    <i class="fas fa-utensils mb-3" style="font-size: 40px"></i>
+    <br />
+    No <span class="text-danger">{{ activeTab }}</span> reservation Found!
+  </h3>
+
+  <table
+    *ngIf="cancelReservation.length !== 0"
+    class="table table-bordered"
+  >
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">User</th>
+        <th scope="col">Reservation Code</th>
+        <th scope="col">Date</th>
+        <th scope="col">Cancelled By</th>
+        <th scope="col">Reason</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of cancelReservation; index as i">
+        <th scope="row">{{ i + 1 }}</th>
+        <td class="text-capitalize">
+          <img
+            class="text-capitalize profile d-inline-block ui-w-30 mr-2"
+            [src]="
+              item.user?.profileImage
+                ? url + item.user?.profileImage
+                : '../../assets/vendor/img/person.png'
+            "
+            alt=""
+          />
+          {{ item.user?.fullName }}
+        </td>
+        <td>#{{ item?.tableBookingCode }}</td>
+        <td class="text-capitalize">
+          {{ item?.reservationDate | date: "mediumDate" }}
+        </td>
+        <td class="text-capitalize" >{{ item?.cancelBy }}</td>
+        <td class="text-capitalize" >{{ item?.cancelReason }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<ng-template #cancelRes let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="editLabel">
+      Cancel Reservation
+    </h5>
+    <button
+      type="button"
+      class="close"
+      (click)="modal.dismiss()"
+      aria-label="Close"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <h5 class="form-group row m-2 pl-2">
+    #{{ editData.bookingCode }}
+  </h5>
+  <div class="modal-body p-0">
+    <form>
+      <div class="form-group row m-3">
+        <label class="font-weight-bold">Reason:</label>
+        <input
+          type="text"
+          [(ngModel)]="editData.cancelReason"
+          name="type"
+          class="form-control"
+        />
+      </div>
+
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="modal.dismiss()"
+        >
+          Close
+        </button>
+        <button
+          type="submit"
+          class=" btn btn-danger"
+          (click)="cancelBtn()"
+        >
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+</ng-template>

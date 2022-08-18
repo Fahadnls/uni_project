@@ -1,0 +1,75 @@
+<h4
+  class="
+    d-flex
+    align-items-center
+    w-100
+    font-weight-bold
+    py-3
+    mb-4
+  "
+>
+<a (click)="back()"> <i class="back fas fa-chevron-left"></i></a>
+  <div class="pl-2"> &nbsp; Upload {{ name == "restaurant" ? "Restaurant" : "Coffee Shop" }} Image</div>
+</h4>
+<div class="card mb-4">
+  <div class="card-body">
+    <div
+      class="dropzone"
+      #dz
+      [dropzone]="dropzoneConfig"
+      (error)="onUploadError($event)"
+      (success)="onUploadSuccess($event)"
+    >
+      <div class="dz-message needsclick">
+        Drop files here or click to upload
+        <span class="note needsclick"
+          >( Selected files are actually uploaded.)</span
+        >
+      </div>
+      <div class="fallback">
+        <input name="file" type="file" multiple />
+      </div>
+    </div>
+    <button
+      type="submit"
+      class="createBtn mt-3 btn btn-danger position-relative"
+      (click)="resetBTN()"
+    >
+      Reset
+    </button>
+    <button
+      type="submit"
+      class="createBtn mt-3 btn btn-success position-relative float-right"
+      (click)="assignToRestaurant()"
+    >
+      Assign to {{ name == "restaurant" ? "Restaurant" : "Coffee Shop" }}
+    </button>
+  </div>
+</div>
+<ngx-image-gallery
+  [images]="images"
+  [conf]="conf"
+  (onDelete)="deleteImage($event)"
+>
+</ngx-image-gallery>
+<div class="row form-row" #galleryContainer>
+  <!-- Add this element to properly relayout grid -->
+  <div class="gallery-sizer col-sm-6 col-md-6 col-xl-3 position-absolute"></div>
+
+  <div
+    *ngFor="let image of restaurantImages; index as i"
+    class="gallery-thumbnail col-sm-6 col-md-6 col-xl-3 mb-2"
+  >
+    <a
+      href="javascript:void(0)"
+      (click)="openGallery(i)"
+      class="img-thumbnail img-thumbnail-zoom-in"
+    >
+      <span class="img-thumbnail-overlay bg-dark opacity-25"></span>
+      <span class="img-thumbnail-content display-4 text-white">
+        <i class="ion ion-ios-search"></i>
+      </span>
+      <img [src]="url + image.imageUrl" class="img img-fluid" />
+    </a>
+  </div>
+</div>

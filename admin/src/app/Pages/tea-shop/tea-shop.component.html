@@ -1,0 +1,268 @@
+<h4
+  class="
+    d-flex
+    justify-content-between
+    align-items-center
+    w-100
+    font-weight-bold
+    py-3
+    mb-4
+  "
+>
+  <div class="pl-2"><i class="fas fa-mug-hot"></i> &nbsp; Coffee</div>
+  <button type="button" routerLink="/addRestaurant/teaShop/create/0" class="btn btn-primary btn-round d-block">
+    <span class="ion ion-md-add"></span>&nbsp; Add Coffee Shop
+  </button>
+</h4>
+<img src="" alt="" />
+<div class="card p-3" *ngIf="loading">
+  <h5 class="text-center mb-0">LOADING...</h5>
+  <div class="sk-wave sk-primary">
+    <div class="sk-rect sk-rect1"></div>
+    <div class="sk-rect sk-rect2"></div>
+    <div class="sk-rect sk-rect3"></div>
+    <div class="sk-rect sk-rect4"></div>
+    <div class="sk-rect sk-rect5"></div>
+  </div>
+</div>
+<div class="card" *ngIf="!loading">
+  <!-- Table controls -->
+  <div *ngIf="!loading">
+    <h3
+      *ngIf="productsData.length === 0"
+      class="text-center my-5 text-capitalize"
+    >
+      <i class="fas fa-hotel mb-3" style="font-size: 40px"></i>
+      <br />
+      No <span class="text-primary">Coffee</span> add yet!
+    </h3>
+  </div>
+  <div *ngIf="productsData.length !== 0">
+    <div class="card-body">
+      <div class="row">
+        <div class="col">
+          Per page: &nbsp;
+          <select
+            [(ngModel)]="perPage"
+            (change)="update()"
+            class="custom-select custom-select-sm d-inline-block w-auto"
+          >
+            <option *ngFor="let limit of [10, 20, 30, 40, 50]">
+              {{ limit }}
+            </option>
+          </select>
+        </div>
+        <div class="col">
+          <input
+            [(ngModel)]="filterVal"
+            (input)="currentPage = 1; update()"
+            class="
+              form-control form-control-sm
+              d-inline-block
+              w-auto
+              float-sm-right
+            "
+            placeholder="Search..."
+          />
+        </div>
+      </div>
+    </div>
+    <hr class="border-light m-0" />
+
+    <div class="table-responsive">
+      <table class="table table-striped table-bordered card-table">
+        <thead>
+          <tr>
+            <th class="text-nowrap cursor-pointer" (click)="setSort('id')">
+              ID<i
+                class="ion text-muted ml-2"
+                *ngIf="sortBy == 'id'"
+                [ngClass]="'ion-md-arrow-' + (sortDesc ? 'down' : 'up')"
+              ></i>
+            </th>
+            <th class="text-nowrap cursor-pointer" (click)="setSort('title')">
+              title<i
+                class="ion text-muted ml-2"
+                *ngIf="sortBy == 'title'"
+                [ngClass]="'ion-md-arrow-' + (sortDesc ? 'down' : 'up')"
+              ></i>
+            </th>
+            <th
+              class="text-nowrap cursor-pointer"
+              (click)="setSort('openingTime')"
+            >
+              Timing<i
+                class="ion text-muted ml-2"
+                *ngIf="sortBy == 'openingTime'"
+                [ngClass]="'ion-md-arrow-' + (sortDesc ? 'down' : 'up')"
+              ></i>
+            </th>
+            <th
+              class="text-nowrap cursor-pointer"
+              (click)="setSort('location')"
+            >
+              Location<i
+                class="ion text-muted ml-2"
+                *ngIf="sortBy == 'location'"
+                [ngClass]="'ion-md-arrow-' + (sortDesc ? 'down' : 'up')"
+              ></i>
+            </th>
+            <th
+              class="text-nowrap cursor-pointer"
+              (click)="setSort('fullName')"
+            >
+              Manger<i
+                class="ion text-muted ml-2"
+                *ngIf="sortBy == 'fullName'"
+                [ngClass]="'ion-md-arrow-' + (sortDesc ? 'down' : 'up')"
+              ></i>
+            </th>
+            <th
+              class="text-nowrap cursor-pointer"
+              (click)="setSort('createdAt')"
+            >
+              Date<i
+                class="ion text-muted ml-2"
+                *ngIf="sortBy == 'createdAt'"
+                [ngClass]="'ion-md-arrow-' + (sortDesc ? 'down' : 'up')"
+              ></i>
+            </th>
+            <th class="text-nowrap cursor-pointer">Reservation</th>
+            <th class="text-nowrap cursor-pointer">Images</th>
+            <th class="text-nowrap cursor-pointer">Table</th>
+            <th class="text-nowrap cursor-pointer">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of productsData; index as i">
+            <td class="align-middle py-2">R-{{ i + 1 }}</td>
+            <td class="align-middle py-2">
+              <div class="media align-items-center">
+                <img
+                  class="d-block ui-w-50"
+                  [src]="
+                    item.mainLogo
+                      ? url + item.mainLogo
+                      : '../../assets/vendor/img/no img.jpg'
+                  "
+                  alt=""
+                />
+                <!-- Generate link to product here -->
+                <a
+                  href="javascript:void(0)"
+                  class="media-body d-block text-dark ml-3"
+                  >{{ item?.title }}</a
+                >
+              </div>
+            </td>
+            <td class="align-middle py-2">
+              {{ item?.openingTime }} to {{ item?.closingTime }}
+            </td>
+            <td class="align-middle py-2">{{ item?.location }}</td>
+            <td class="align-middle py-2">
+              {{ item?.restaurant_manger.fullName }}
+            </td>
+            <td class="align-middle py-2">
+              {{ item?.createdAt | date: "mediumDate" }}
+            </td>
+            <td class="align-middle py-2">
+              <a
+                routerLink="/reservation/{{item.id}}"
+                class="btn btn-default btn-xs md-btn-flat py-2"
+              >
+                <i class="fas fa-utensils text-danger"></i> See All
+              </a>
+            </td>
+            <td class="align-middle py-2">
+              <a
+                routerLink="/restaurantImage/teaShop/{{item.id}}"
+                class="btn btn-default btn-xs md-btn-flat py-2"
+              >
+                <i class="far fa-images text-success"></i> Open
+              </a>
+            </td>
+            <td class="align-middle py-2">
+              <a
+              routerLink="/restaurantTable/teaShop/{{item.id}}"
+                
+                class="btn btn-default btn-xs md-btn-flat py-2"
+              >
+               Table management
+              </a>
+            </td>
+
+            <td class="text-nowrap align-middle py-2">
+              <a
+              routerLink="/addRestaurant/teaShop/update/{{item.id}}"
+                href="javascript:void(0)"
+                class="btn btn-default btn-xs icon-btn md-btn-flat"
+              >
+                <i class="fas fa-pencil-alt text-success"></i>
+              </a>
+              <a
+                (click)="openModal(deleteModal, item, i)"
+                href="javascript:void(0)"
+                class="btn btn-default btn-xs icon-btn md-btn-flat"
+                ngbTooltip="Delete"
+              >
+                <i class="fas fa-trash-alt text-danger"></i>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <div class="card-body py-0">
+      <div class="row">
+        <div class="col-sm text-sm-left text-center pt-3">
+          <span class="text-muted" *ngIf="totalItems"
+            >Page {{ currentPage }} of {{ totalPages }}</span
+          >
+        </div>
+        <div class="col-sm pt-3">
+          <ngb-pagination
+            [collectionSize]="totalItems"
+            [pageSize]="perPage"
+            [(page)]="currentPage"
+            (pageChange)="update()"
+            size="sm"
+            class="d-flex justify-content-center justify-content-sm-end m-0"
+          >
+          </ngb-pagination>
+        </div>
+      </div>
+    </div>
+    <!-- / Pagination -->
+  </div>
+</div>
+<ng-template #deleteModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="editLabel">Delete Restaurant</h5>
+    <button
+      type="button"
+      class="close"
+      (click)="modal.dismiss()"
+      aria-label="Close"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body p-0">
+    <p style="padding: 15px 25px">
+      Are you sure you want to delete
+      <b>{{ editData.title ? editData.title : "" }}</b>
+    </p>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">
+        Close
+      </button>
+      <button type="submit" class="btn btn-danger" (click)="deleteClick()">
+        Delete
+      </button>
+    </div>
+  </div>
+</ng-template>

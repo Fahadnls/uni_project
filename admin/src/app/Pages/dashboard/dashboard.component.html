@@ -1,0 +1,237 @@
+<h4 class="d-flex justify-content-between align-items-center py-2 mb-4">
+  <div class="font-weight-bold">Dashboard</div>
+</h4>
+
+<div class="card p-3" *ngIf="loading">
+  <div class="sk-wave sk-primary">
+    <div class="sk-rect sk-rect1"></div>
+    <div class="sk-rect sk-rect2"></div>
+    <div class="sk-rect sk-rect3"></div>
+    <div class="sk-rect sk-rect4"></div>
+    <div class="sk-rect sk-rect5"></div>
+  </div>
+  <h5 class="text-center mb-0">LOADING...</h5>
+</div>
+
+<div *ngIf="!loading">
+  <!-- Counters -->
+  <div *ngIf="isAdmin()" class="row">
+    <div class="col-sm-4 col-xl-4">
+      <div class="card mb-4">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <i class="fas fa-user text-info" style="font-size: 25px"></i>
+            <div class="ml-3">
+              <div class="text-muted small">Total Users</div>
+              <div class="text-large">{{ dashboardData.totalUsers }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="col-sm-6 col-xl-2">
+      <div class="card mb-4">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <i class="fas fa-user-tie text-warning" style="font-size: 25px"></i>
+            <div class="ml-3">
+              <div class="text-muted small">Total Managers</div>
+              <div class="text-large">{{ dashboardData.totalManagers }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> -->
+    <div class="col-sm-4 col-xl-4">
+      <div class="card mb-4">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <i class="fas fa-hotel text-success" style="font-size: 25px"></i>
+            <div class="ml-3">
+              <div class="text-muted small">Total Restaurants</div>
+              <div class="text-large">{{ dashboardData.totalRestaurants }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="col-sm-6 col-xl-2">
+      <div class="card mb-4">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <i class="fas fa-mug-hot text-info" style="font-size: 25px"></i>
+            <div class="ml-3">
+              <div class="text-muted small">Total Coffee Shop</div>
+              <div class="text-large">
+                {{ dashboardData.totalTeaShop }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> -->
+    <div class="col-sm-4 col-xl-4">
+      <div class="card mb-4">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <i class="fas fa-utensils text-danger" style="font-size: 25px"></i>
+            <div class="ml-3">
+              <div class="text-muted small">Total Reservations</div>
+              <div class="text-large">
+                {{ dashboardData.totalReservations }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+ 
+  </div>
+  <!-- / Counters -->
+
+  <!-- Stats block -->
+
+  <h5 class="text-muted font-weight-normal mb-2">Reservations Status</h5>
+
+  <hr class="border-light container-m--x my-0" />
+
+  <div class="row no-gutters row-bordered row-border-light container-m--x">
+    <!-- Order Status -->
+    <div
+      [class]="
+        isAdmin()
+          ? 'col-sm-4 col-md-4 col-lg-4 col-xl-4'
+          : 'col-sm-3 col-md-3 col-lg-3 col-xl-3'
+      "
+    >
+      <div class="d-flex align-items-center container-p-x py-4">
+        <i
+          class="fas fa-hourglass-half text-warning"
+          style="font-size: 30px"
+        ></i>
+        <div class="ml-3">
+          <div class="text-muted small">Reserved</div>
+          <div class="text-large">{{ dashboardData.reservedReservation }}</div>
+        </div>
+      </div>
+    </div>
+    <div
+      [class]="
+        isAdmin()
+          ? 'col-sm-4 col-md-4 col-lg-4 col-xl-4'
+          : 'col-sm-3 col-md-3 col-lg-3 col-xl-3'
+      "
+    >
+      <div class="d-flex align-items-center container-p-x py-4">
+        <i class="far fa-check-square text-success" style="font-size: 30px"></i>
+        <div class="ml-3">
+          <div class="text-muted small">Completed</div>
+          <div class="text-large">
+            {{ dashboardData.completedReservations }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      [class]="
+        isAdmin()
+          ? 'col-sm-4 col-md-4 col-lg-4 col-xl-4'
+          : 'col-sm-3 col-md-3 col-lg-3 col-xl-3'
+      "
+    >
+      <div class="d-flex align-items-center container-p-x py-4">
+        <i class="far fa-window-close text-danger" style="font-size: 30px"></i>
+        <div class="ml-3">
+          <div class="text-muted small">Cancelled</div>
+          <div class="text-large">{{ dashboardData.cancelledReservation }}</div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="!isAdmin()" class="col-sm-3 col-md-3 col-lg-3 col-xl-3">
+      <div class="d-flex align-items-center container-p-x py-4">
+        <i class="fas fa-utensils text-danger" style="font-size: 30px"></i>
+        <div class="ml-3">
+          <div class="text-muted small">Total Reservation</div>
+          <div class="text-large">{{ dashboardData.totalReservations }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- / Order Status -->
+
+    <div class="col-md-4">
+      <!-- Type gadgets chart -->
+      <div class="card mb-4">
+        <h6 class="card-header with-elements">
+          <div class="card-header-title">Reservations Stats</div>
+        </h6>
+        <div class="py-4 px-3">
+          <div id="chart">
+            <canvas
+              baseChart
+              height="204"
+              [datasets]="chart6Data"
+              [labels]="['Reserved', 'Completed', 'Cancelled']"
+              [options]="chart6Options"
+              [chartType]="'doughnut'"
+              [colors]="chart6Colors"
+            >
+            </canvas>
+          </div>
+        </div>
+      </div>
+      <!-- / Type gadgets chart -->
+    </div>
+
+    <div class="col-md-8">
+      <!-- Sale stats -->
+      <div class="card mb-4">
+        <h6 class="card-header with-elements">
+          <div class="card-header-title">Latest Reservations</div>
+        </h6>
+        <div
+          *ngIf="dashboardData.getFiveReservations.length != 0"
+          class="table-responsive"
+        >
+          <table class="table card-table">
+            <thead>
+              <tr>
+                <th *ngIf="isAdmin()">Restaurant Name</th>
+                <th >User Name</th>
+                <th>Reservation Time</th>
+                <th>Status</th>
+                <th>Reservation Code</th>
+                <th *ngIf="!isAdmin()">Table No</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of dashboardData.getFiveReservations">
+                <td *ngIf="isAdmin()">
+                  {{ item?.restaurant?.title | titlecase }}
+                </td>
+                <td >{{ item?.user?.fullName | titlecase }}</td>
+                <td>
+                  {{ item?.reservationDate | date: "MMM dd, yyyy - hh:mm a" }}
+                </td>
+                <td
+                  [class]="
+                    item.status == 'Cancel'
+                      ? 'text-danger'
+                      : item.status == 'Completed'
+                      ? 'text-success'
+                      : 'text-primary'
+                  "
+                >
+                  {{ item?.status }}
+                </td>
+                <td>#{{ item?.tableBookingCode }}</td>
+                <td *ngIf="!isAdmin()">#{{ item?.restaurant_table?.tableNumber }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- / Sale stats -->
+    </div>
+  </div>
+</div>

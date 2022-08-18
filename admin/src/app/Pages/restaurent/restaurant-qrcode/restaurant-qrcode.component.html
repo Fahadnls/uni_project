@@ -1,0 +1,9 @@
+<div class="container">
+  <qrcode
+    style=" width: 500px"
+    [qrdata]="qrCodeData"
+    [width]="500"
+    [errorCorrectionLevel]="'M'"
+  ></qrcode>
+  <h2 class="mt-2 text-center">{{restaurantTitle | titlecase }}</h2>
+</div>

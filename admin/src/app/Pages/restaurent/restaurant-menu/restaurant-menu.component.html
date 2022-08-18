@@ -1,0 +1,400 @@
+<h4
+  class="d-flex justify-content-between align-items-center w-100 font-weight-bold py-3 mb-4"
+>
+  <div class="pl-2">
+    <i class="fas fa-file-invoice-dollar"></i> &nbsp; Restaurant Menu
+  </div>
+  <button
+    type="button"
+    class="btn btn-primary btn-round d-block"
+    (click)="openModal(menuModal, 'menuAdd', null, null, null)"
+  >
+    <span class="ion ion-md-add"></span>&nbsp; Add menu
+  </button>
+</h4>
+<div class="card p-3" *ngIf="loading">
+  <h5 class="text-center mb-0">LOADING...</h5>
+  <div class="sk-wave sk-primary">
+    <div class="sk-rect sk-rect1"></div>
+    <div class="sk-rect sk-rect2"></div>
+    <div class="sk-rect sk-rect3"></div>
+    <div class="sk-rect sk-rect4"></div>
+    <div class="sk-rect sk-rect5"></div>
+  </div>
+</div>
+<div class="card" *ngIf="!loading">
+  <div class="card-body">
+    <div style="text-align: center" *ngIf="originalProductsData.length == 0">
+      No menu Created yet
+    </div>
+    <div class="row" *ngIf="originalProductsData.length != 0">
+      <div class="col">
+        Per page: &nbsp;
+        <select
+          [(ngModel)]="perPage"
+          (change)="update()"
+          class="custom-select custom-select-sm d-inline-block w-auto"
+        >
+          <option *ngFor="let limit of [10, 20, 30, 40, 50]">
+            {{ limit }}
+          </option>
+        </select>
+      </div>
+      <div class="col">
+        <input
+          [(ngModel)]="filterVal"
+          (input)="currentPage = 1; update()"
+          class="form-control form-control-sm d-inline-block w-auto float-sm-right"
+          placeholder="Search..."
+        />
+      </div>
+    </div>
+  </div>
+  <hr class="border-light m-0" />
+  <div class="table-responsive" *ngIf="originalProductsData.length != 0">
+    <table class="table table-striped table-bordered card-table table-plain">
+      <thead>
+        <tr>
+          <th class="text-nowrap cursor-pointer"></th>
+          <th class="text-nowrap cursor-pointer" (click)="setSort('id')">
+            #<i
+              class="ion text-muted ml-2"
+              *ngIf="sortBy == 'id'"
+              [ngClass]="'ion-md-arrow-' + (sortDesc ? 'down' : 'up')"
+            ></i>
+          </th>
+          <th class="text-nowrap cursor-pointer" (click)="setSort('title')">
+            Tile<i
+              class="ion text-muted ml-2"
+              *ngIf="sortBy == 'title'"
+              [ngClass]="'ion-md-arrow-' + (sortDesc ? 'down' : 'up')"
+            ></i>
+          </th>
+          <th class=""></th>
+          <th class=""></th>
+          <th class="text-nowrap cursor-pointer">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let item of productsData; index as ia">
+          <tr>
+            <td
+              class="text-nowrap align-middle py-2 bg-plan"
+              style="width: 80px"
+            >
+              <a
+                (click)="showTable(ia)"
+                href="javascript:void(0)"
+                class="btn btn-default btn-xs icon-btn md-btn-flat"
+              >
+                <i
+                  [class]="
+                    item.isChecked
+                      ? ' fas fa-chevron-up text-dark'
+                      : 'fas fa-chevron-down text-dark'
+                  "
+                ></i>
+              </a>
+            </td>
+            <td class="align-middle py-2 bg-plan">{{ ia + 1 }}</td>
+            <td class="align-middle py-2 bg-plan">
+              {{ item?.title }}
+            </td>
+            <td class="align-middle py-2"></td>
+            <td class="align-middle py-2"></td>
+            <td class="text-nowrap align-middle py-2 bg-plan">
+              <a
+                (click)="openModal(menuModal, 'menuEdit', item, ia)"
+                href="javascript:void(0)"
+                class="btn btn-default btn-xs icon-btn md-btn-flat"
+                ngbTooltip="Edit"
+              >
+                <i class="fas fa-pencil-alt text-success"></i>
+              </a>
+              <a
+                (click)="openModal(deleteModal, 'menuEdit', item, ia)"
+                href="javascript:void(0)"
+                class="btn btn-default btn-xs icon-btn md-btn-flat"
+                ngbTooltip="delete"
+              >
+                <i class="fas fa-trash text-danger"></i>
+              </a>
+              <a
+                (click)="openModal(submenuModal, 'subMenuAdd', item, ia)"
+                href="javascript:void(0)"
+                class="btn btn-default btn-xs icon-btn md-btn-flat"
+                ngbTooltip="Add plan"
+              >
+                <i class="fas fa-plus text-dark"></i>
+              </a>
+            </td>
+          </tr>
+          <ng-container *ngIf="item.isChecked == true">
+            <tr *ngIf="item.menu_details.length == 0">
+              <td></td>
+              <td></td>
+              <td>
+                <div style="text-align: center; min-width: 140px">
+                  No detail created yet
+                </div>
+              </td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr *ngIf="item.menu_details.length != 0">
+              <th
+                class="text-nowrap cursor-pointer"
+                style="background: #b5b5b5"
+              ></th>
+              <th
+                class="text-nowrap cursor-pointer"
+                style="background: #b5b5b5"
+              ></th>
+              <th
+                class="text-nowrap cursor-pointer"
+                style="background: #b5b5b5"
+              >
+                #
+              </th>
+              <th
+                class="text-nowrap cursor-pointer"
+                style="background: #b5b5b5"
+              >
+                Menu
+              </th>
+              <th
+                class="text-nowrap cursor-pointer"
+                style="background: #b5b5b5"
+              >
+                Price
+              </th>
+              <th
+                class="text-nowrap cursor-pointer"
+                style="background: #b5b5b5"
+              ></th>
+            </tr>
+            <tr *ngFor="let item of item.menu_details; index as i">
+              <td class="align-middle py-2"></td>
+              <td class="align-middle py-2"></td>
+              <td class="align-middle py-2">{{ i + 1 }}</td>
+              <td class="align-middle py-2">
+                <div class="media align-items-center">
+                  <img
+                    class="d-block ui-w-50"
+                    [src]="
+                      item.image
+                        ? url + item.image
+                        : '../../assets/vendor/img/no img.jpg'
+                    "
+                    alt=""
+                  />
+                  <!-- Generate link to product here -->
+                  <a
+                    href="javascript:void(0)"
+                    class="media-body d-block text-dark ml-3"
+                    >{{ item?.title | titlecase }}</a
+                  >
+                </div>
+              </td>
+              <td class="align-middle py-2">{{ item?.price }}</td>
+              <td class="text-nowrap align-middle py-2">
+                <a
+                  (click)="
+                    openModal(submenuModal, 'subMenuEdit', item, ia, i)
+                  "
+                  href="javascript:void(0)"
+                  class="btn btn-default btn-xs icon-btn md-btn-flat"
+                  ngbTooltip="Edit"
+                >
+                  <i class="fas fa-pencil-alt text-success"></i>
+                </a>
+                <a
+                  (click)="delPaymentScheduleBtn(item.id, ia, i)"
+                  href="javascript:void(0)"
+                  class="btn btn-default btn-xs icon-btn md-btn-flat"
+                  ngbTooltip="delete"
+                >
+                  <i class="fas fa-trash text-danger"></i>
+                </a>
+              </td>
+            </tr>
+          </ng-container>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+  <div class="card-body py-0">
+    <div class="row" *ngIf="originalProductsData.length != 0">
+      <div class="col-sm text-sm-left text-center pt-3">
+        <span class="text-muted" *ngIf="totalItems"
+          >Page {{ currentPage }} of {{ totalPages }}</span
+        >
+      </div>
+      <div class="col-sm pt-3">
+        <ngb-pagination
+          [collectionSize]="totalItems"
+          [pageSize]="perPage"
+          [(page)]="currentPage"
+          (pageChange)="update()"
+          size="sm"
+          class="d-flex justify-content-center justify-content-sm-end m-0"
+        >
+        </ngb-pagination>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #menuModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="editLabel">
+      {{ name == "menuAdd" ? "Add" : "Edit" }} Restaurant menu
+    </h5>
+    <button
+      type="button"
+      class="close"
+      (click)="modal.dismiss()"
+      aria-label="Close"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body p-0">
+    <form>
+      <div class="form-group row m-4">
+        <label class="font-weight-bold">Title:</label>
+        <input
+          type="text"
+          [(ngModel)]="restaurantMenuData.title"
+          name="name"
+          class="form-control"
+        />
+      </div>
+
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="modal.dismiss()"
+        >
+          Close
+        </button>
+        <button
+          type="submit"
+          [class]="name == 'menuAdd' ? 'btn btn-primary' : 'btn btn-success'"
+          (click)="
+            name == 'menuAdd'
+              ? addRestaurantMenuClick()
+              : editRestaurantMenuClick()
+          "
+        >
+          {{ name == "menuAdd" ? "Add" : "Edit" }}
+        </button>
+      </div>
+    </form>
+  </div>
+</ng-template>
+<ng-template #submenuModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="editLabel">
+      {{ name != 'subMenuEdit' ? "Add" : "Edit" }} Menu
+    </h5>
+    <button
+      type="button"
+      class="close"
+      (click)="modal.dismiss()"
+      aria-label="Close"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body p-0">
+    <form>
+      <div class="form-group row m-4">
+        <label class="font-weight-bold">Menu:</label>
+        <input
+          type="text"
+          [(ngModel)]="menuDetail.title"
+          name="coding"
+          class="form-control"
+        />
+      </div>
+      <div class="row m-4">
+        <label for="formFile" class="form-label">Image:</label>
+        <div class="custom-file">
+          <input
+            type="file"
+            class="custom-file-input"
+            (change)="imagePicked($event)"
+          />
+          <label class="custom-file-label" for="validatedCustomFile">
+            {{ menuDetail.image == "" ? "Food Type Image" : menuDetail.image }}
+          </label>
+        </div>
+      </div>
+      <div class="form-group row m-4">
+        <label class="font-weight-bold">Price:</label>
+        <input
+          type="number"
+          [(ngModel)]="menuDetail.price"
+          name="item"
+          class="form-control"
+        />
+      </div>
+
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="modal.dismiss()"
+        >
+          Close
+        </button>
+        <button
+          type="submit"
+          [class]="name != 'subMenuEdit' ? 'btn btn-primary' : 'btn btn-success'"
+          (click)="
+            name != 'subMenuEdit'
+              ? addSubMenuClick()
+              : editSubMenuClick()
+          "
+        >
+          {{ name != 'subMenuEdit' ? "Add" : "Edit" }}
+        </button>
+      </div>
+    </form>
+  </div>
+</ng-template>
+<ng-template #deleteModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="editLabel">Delete Menu</h5>
+    <button
+      type="button"
+      class="close"
+      (click)="modal.dismiss()"
+      aria-label="Close"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body p-0">
+    <p style="padding: 15px 25px">
+      Are you sure you want to delete
+      <b>{{ restaurantMenuData.title ? restaurantMenuData.title : "" }}</b>
+    </p>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">
+        Close
+      </button>
+      <button
+        type="submit"
+        class="btn btn-primary"
+        (click)="deleteRestaurantMenuClick()"
+      >
+        Delete
+      </button>
+    </div>
+  </div>
+</ng-template>

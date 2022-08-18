@@ -1,0 +1,256 @@
+<h4
+  class="
+    d-flex
+    justify-content-between
+    align-items-center
+    w-100
+    font-weight-bold
+    py-3
+    mb-4
+  "
+>
+  <div class="pl-2"><i class="fas fa-user-tie"></i> &nbsp; Mangers</div>
+  <button
+    type="button"
+    class="btn btn-primary btn-round d-block"
+    (click)="openModal(mangerModal, null, null)"
+  >
+    <span class="ion ion-md-add"></span>&nbsp; Add Manger
+  </button>
+</h4>
+<img src="" alt="" />
+<div class="card p-3" *ngIf="loading">
+  <h5 class="text-center mb-0">LOADING...</h5>
+  <div class="sk-wave sk-primary">
+    <div class="sk-rect sk-rect1"></div>
+    <div class="sk-rect sk-rect2"></div>
+    <div class="sk-rect sk-rect3"></div>
+    <div class="sk-rect sk-rect4"></div>
+    <div class="sk-rect sk-rect5"></div>
+  </div>
+</div>
+<div class="card" *ngIf="!loading">
+  <!-- Table controls -->
+  <div class="card-body">
+    <div class="row">
+      <div class="col">
+        Per page: &nbsp;
+        <select
+          [(ngModel)]="perPage"
+          (change)="update()"
+          class="custom-select custom-select-sm d-inline-block w-auto"
+        >
+          <option *ngFor="let limit of [10, 20, 30, 40, 50]">
+            {{ limit }}
+          </option>
+        </select>
+      </div>
+      <div class="col">
+        <input
+          [(ngModel)]="filterVal"
+          (input)="currentPage = 1; update()"
+          class="
+            form-control form-control-sm
+            d-inline-block
+            w-auto
+            float-sm-right
+          "
+          placeholder="Search..."
+        />
+      </div>
+    </div>
+  </div>
+  <hr class="border-light m-0" />
+  <div class="table-responsive">
+    <table class="table table-striped table-bordered card-table">
+      <thead>
+        <tr>
+          <th class="text-nowrap cursor-pointer" (click)="setSort('id')">
+            ID<i
+              class="ion text-muted ml-2"
+              *ngIf="sortBy == 'id'"
+              [ngClass]="'ion-md-arrow-' + (sortDesc ? 'down' : 'up')"
+            ></i>
+          </th>
+          <th class="text-nowrap cursor-pointer" (click)="setSort('fullName')">
+            Full Name<i
+              class="ion text-muted ml-2"
+              *ngIf="sortBy == 'fullName'"
+              [ngClass]="'ion-md-arrow-' + (sortDesc ? 'down' : 'up')"
+            ></i>
+          </th>
+          <th class="text-nowrap cursor-pointer" (click)="setSort('email')">
+            email<i
+              class="ion text-muted ml-2"
+              *ngIf="sortBy == 'email'"
+              [ngClass]="'ion-md-arrow-' + (sortDesc ? 'down' : 'up')"
+            ></i>
+          </th>
+         
+          <th class="text-nowrap cursor-pointer" (click)="setSort('createdAt')">
+            Date<i
+              class="ion text-muted ml-2"
+              *ngIf="sortBy == 'createdAt'"
+              [ngClass]="'ion-md-arrow-' + (sortDesc ? 'down' : 'up')"
+            ></i>
+          </th>
+          <th class="text-nowrap cursor-pointer">Restaurant</th>
+          <th class="text-nowrap cursor-pointer">Status</th>
+          <th class="text-nowrap cursor-pointer">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of productsData;index as i">
+          <td class="align-middle py-2">R-{{ i+1 }}</td>
+          <td class="align-middle py-2">
+            <div class="media align-items-center">
+              <img
+                class="profile d-block ui-w-40"
+                [src]="
+                  item.profileImage
+                    ? url + item.profileImage
+                    : '../../assets/vendor/img/person.png'
+                "
+                alt=""
+              />
+              <!-- Generate link to product here -->
+              <a
+                href="javascript:void(0)"
+                class="media-body d-block text-dark ml-3"
+                >{{ item?.fullName | titlecase }}</a
+              >
+            </div>
+          </td>
+          <td class="align-middle py-2">{{ item?.email }}</td>
+          <td class="align-middle py-2">
+            {{ item?.createdAt | date: "mediumDate" }}
+          </td>
+          <td [class]="item.restaurants?.length == 0? 'align-middle py-2 text-danger': 'align-middle py-2'">
+            {{ item?.restaurants?.length?  item?.restaurants[0]?.title: 'not assigned yet'| titlecase }}
+          </td>
+         
+            <td class="align-middle">
+              <span
+              class="badge badge-outline-success"
+              *ngIf="!item?.isBlocked"
+              >Active</span
+            >
+            <span
+              class="badge badge-outline-danger"
+              *ngIf="item?.isBlocked"
+              >Banned</span
+            >
+            </td>
+            <td class="text-nowrap align-middle py-2">
+              <a
+              (click)="blockUser(item,i)"
+                href="javascript:void(0)"
+                class="btn btn-default btn-xs icon-btn md-btn-flat"
+              >
+                <i [class]="item?.isBlocked? 'fas fa-user-lock' : 'fas fa-unlock'"></i>
+              </a>
+            <a
+            (click)="openModal(mangerModal, item, i)"
+              href="javascript:void(0)"
+              class="btn btn-default text-success btn-xs icon-btn md-btn-flat"
+            >
+              <i class="fas fa-pencil-alt"></i>
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <!-- Pagination -->
+  <div class="card-body py-0">
+    <div class="row">
+      <div class="col-sm text-sm-left text-center pt-3">
+        <span class="text-muted" *ngIf="totalItems"
+          >Page {{ currentPage }} of {{ totalPages }}</span
+        >
+      </div>
+      <div class="col-sm pt-3">
+        <ngb-pagination
+          [collectionSize]="totalItems"
+          [pageSize]="perPage"
+          [(page)]="currentPage"
+          (pageChange)="update()"
+          size="sm"
+          class="d-flex justify-content-center justify-content-sm-end m-0"
+        >
+        </ngb-pagination>
+      </div>
+    </div>
+  </div>
+  <!-- / Pagination -->
+</div>
+ 
+<ng-template #mangerModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="editLabel">
+      {{ editIndex == null ? "Add" : "Edit" }} Restaurant Manger
+    </h5>
+    <button
+      type="button"
+      class="close"
+      (click)="modal.dismiss()"
+      aria-label="Close"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body p-0">
+    <form>
+      <div class="form-group row m-4">
+        <label class="font-weight-bold">Full Name:</label>
+        <input
+          type="text"
+          [(ngModel)]="editData.fullName"
+          name="fullName"
+          class="form-control"
+          placeholder="john doe"
+        />
+      </div>
+      <div class="form-group row m-4">
+        <label class="font-weight-bold">Email:</label>
+        <input
+          type="text"
+          [(ngModel)]="editData.email"
+          name="email"
+          class="form-control"
+          placeholder="@example.com"
+        />
+      </div>
+      <div class="form-group row m-4">
+        <label class="font-weight-bold">Password:</label>
+        <input
+          type="password"
+          [(ngModel)]="editData.password"
+          name="password"
+          class="form-control"
+          placeholder="*******"
+        />
+      </div>
+
+
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="modal.dismiss()"
+        >
+          Close
+        </button>
+        <button
+          type="submit"
+          [class]="editIndex == null ? 'btn btn-primary' : 'btn btn-success'"
+          (click)="editIndex == null ? registerManger() : updateManger()"
+        >
+          {{ editIndex == null ? "Add" : "Edit" }}
+        </button>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
