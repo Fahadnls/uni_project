@@ -1,0 +1,155 @@
+<ion-content>
+  <ion-grid class="ion-no-padding">
+    <ion-row>
+      <ion-col size="12" class="ion-no-padding">
+        <div class="header">
+          <ion-item lines="none" color="transparent">
+            <ion-label>
+              <h1 class="ion-text-capitalize">
+                {{'teaAndRestaurant.hi' | translate}} {{user?.fullName}}
+              </h1>
+              <p>{{'teaAndRestaurant.WhereYouWantToGo' | translate}}</p>
+            </ion-label>
+          </ion-item>
+        </div>
+        <ion-item mode="ios" lines="none" class="total_balance">
+          <h6>Food Type</h6>
+          <ion-button
+            class="seeAll_btn"
+            routerLink="/home"
+            mode="md"
+            slot="end"
+            fill="solid"
+          >
+            See All
+          </ion-button>
+        </ion-item>
+        <ion-grid *ngIf="showSkeleton">
+          <ion-row>
+            <ion-col size="6" *ngFor="let item of foodType | slice:0:4;">
+              <ion-card
+                button
+                mode="ios"
+                class="ion-no-margin"
+                routerLink="/restaurant/{{item?.id}}/restaurant/{{item?.type}}"
+              >
+                <h6>{{ item?.type}}</h6>
+                <ion-img [src]="url + item.icon"></ion-img>
+              </ion-card>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        <ion-grid *ngIf="!showSkeleton">
+          <ion-row>
+            <ion-col size="6" *ngFor="let item of skeleton">
+              <ion-card button mode="ios" class="ion-no-margin">
+                <h6>
+                  <ion-skeleton-text
+                    animated
+                    style="width: 85%"
+                  ></ion-skeleton-text>
+                </h6>
+                <ion-thumbnail class="imgSkeleton">
+                  <ion-skeleton-text animated></ion-skeleton-text>
+                </ion-thumbnail>
+              </ion-card>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        <br />
+        <ion-item mode="ios" lines="none" class="total_balance">
+          <h6>Restaurant</h6>
+          <ion-button
+            class="seeAll_btn"
+            routerLink="/restaurant/noId/tea/null"
+            slot="end"
+            mode="md"
+            fill="solid"
+          >
+            See All
+          </ion-button>
+        </ion-item>
+        <ion-grid *ngIf="showSkeleton">
+          <ion-row>
+            <ion-col
+              size="6"
+              style="padding: 4px"
+              *ngFor="let item of data  | slice:0:6; "
+            >
+              <ion-card
+                mode="ios"
+                button
+                routerLink="/restaurant-detail/{{item?.restaurant.id}}"
+                class="restaurantCard ion-no-margin"
+                [style.background]="bgReturner(item?.restaurant?.mainLogo)"
+              >
+                <ion-item
+                  class="ion-no-padding"
+                  color="transparent"
+                  lines="none"
+                >
+                  <ion-text> {{item?.restaurant?.title}} </ion-text>
+                  <p slot="end" class="distance">
+                    {{item?.restaurant?.distanceInMeters}}Km
+                  </p>
+                </ion-item>
+                <ion-item
+                  class="ion-no-padding"
+                  lines="none"
+                  color="transparent"
+                  style="margin-top: 73px"
+                >
+                  <h6 style="color: white; font-weight: normal">
+                    {{item?.restaurant?.promotionalText}}
+                  </h6>
+                  <p slot="end" style="height: auto">
+                    <ion-icon
+                      *ngIf="item.restaurant.rating != 0"
+                      name="star"
+                    ></ion-icon
+                    >{{item.restaurant.rating? item?.restaurant?.rating :'N/A'}}
+                  </p>
+                </ion-item>
+              </ion-card>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        <ng-container *ngIf="showSkeleton">
+          <ion-grid class="empty" *ngIf="data.length == 0">
+            <ion-row>
+              <ion-col size="12">
+                <ion-icon
+                  style="
+                    text-align: center;
+                    margin: auto;
+                    display: block;
+                    font-size: 40px;
+                    color: gray;
+                  "
+                  [name]="name == 'tea'? 'fast-food-outline':'cafe-outline' "
+                ></ion-icon>
+                <p style="text-align: center">
+                  {{'restaurant.noNear' | translate}} {{name == 'tea'?
+                  ('restaurant.Restaurant' | translate) : ('restaurant.TeaShop'
+                  | translate)}} {{'restaurant.inYourArea' | translate}}
+                </p>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ng-container>
+        <ion-grid *ngIf="!showSkeleton">
+          <ion-row>
+            <ion-col size="6" *ngFor="let item of skeleton">
+              <ion-card button mode="ios" class="ion-no-margin">
+                <ion-thumbnail class="imgSkeleton">
+                  <ion-skeleton-text animated></ion-skeleton-text>
+                </ion-thumbnail>
+              </ion-card>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <br />
+</ion-content>

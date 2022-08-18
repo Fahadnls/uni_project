@@ -1,0 +1,14 @@
+ion-tabs {
+  ion-tab-bar {
+    padding: 10px 0;
+    border: none;
+    ion-tab-button {
+      --color-selected: #e8335e;
+    }
+  }
+}
+.tableWithChair {
+  height: 30px;
+  width: 30px;
+  object-fit: contain;
+}

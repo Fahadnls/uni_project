@@ -1,0 +1,156 @@
+ion-content {
+  ion-slides {
+    margin-top: 7px;
+  }
+
+  ion-grid {
+    ion-row {
+      ion-col {
+        ion-card {
+          padding: 12px;
+          margin: 3px;
+          h6 {
+            margin-top: 2px;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: black;
+            text-transform: capitalize;
+          }
+          ion-img {
+            width: 100%;
+            height: 80px;
+            object-fit: cover;
+          }
+          ion-img::part(image) {
+            border-radius: 7px;
+          }
+        }
+      }
+    }
+  }
+}
+ion-item {
+  color: white;
+  ion-label {
+    padding-right: 5px;
+  }
+}
+.imgSkeleton {
+  width: 100%;
+  margin: auto;
+  display: block;
+  height: 140px;
+}
+.total_balance {
+
+  --background: #f9f9f900;
+  padding: 7px;
+  --padding-start: 0px;
+  --inner-padding-end: 0px;
+  margin-top: -19px;
+
+
+  h6 {
+    margin: 3px;
+    color: gray;
+  }
+
+  h2 {
+    color: rgb(0, 0, 0);
+    margin: 7px auto;
+    // font-size: 27px;
+    font-weight: bold;
+  }
+  .seeAll_btn {
+    width: 25%;
+    height: 40px;
+    --border-radius: 9px;
+  }
+}
+.restaurantCard {
+  color: black !important;
+  border-radius: 16px !important;
+  margin-bottom: 0px !important;
+  height: 170px !important;
+  width: 100% !important;
+
+  ion-item {
+    --inner-padding-end: 0 !important;
+    --padding-start: 7px !important;
+    // margin-top: 4px !important;
+    margin-bottom: 4px !important;
+    color: white !important;
+    ion-text {
+      height: 2.7rem !important;
+      overflow: hidden !important;
+      white-space: normal !important;
+      line-height: 21px !important;
+    }
+    .distance {
+      font-size: 12px !important;
+      color: rgb(255, 255, 255) !important;
+    }
+    p {
+      margin: 0px 9px 0px 7px !important;
+      height: 2.5rem !important;
+      overflow: hidden !important;
+      white-space: normal !important;
+      ion-icon {
+        position: relative !important;
+        top: 1px !important;
+      }
+    }
+  }
+  h6 {
+    margin: 0 !important;
+    height: 2.5rem !important;
+    overflow: hidden !important;
+    white-space: normal !important;
+  }
+  ion-icon {
+    color: orange !important;
+  }
+
+  .card_content {
+    margin: auto !important;
+    ion-row {
+      ion-col {
+        align-self: center !important;
+        h6 {
+          text-transform: capitalize !important;
+          margin: auto !important;
+          font-weight: bold !important;
+        }
+        .distance {
+          position: relative !important;
+          float: right !important;
+          font-size: 12px !important;
+        }
+        p {
+          margin: auto !important;
+          color: #5e5e5e !important;
+          overflow: hidden !important;
+          line-height: 1rem !important;
+          text-transform: capitalize !important;
+        }
+        .fa {
+          position: relative !important;
+          float: right !important;
+          font-size: 35px !important;
+          p {
+            font-size: 11px !important;
+            color: black !important;
+            margin: 0 !important;
+            position: absolute !important;
+            top: 50% !important;
+            left: 50% !important;
+            transform: translate(-50%, -50%) !important;
+          }
+        }
+        .checked {
+          color: orange !important;
+        }
+      }
+    }
+  }
+}

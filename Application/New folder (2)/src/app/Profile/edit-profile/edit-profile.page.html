@@ -1,0 +1,48 @@
+<ion-header *ngIf="!loading" class="ion-no-border">
+  <div class="header">
+    <ion-toolbar class="ion-no-border">
+      <ion-buttons slot="start" mode="md">
+        <ion-back-button defaultHref=""></ion-back-button>
+      </ion-buttons>
+      <ion-title mode="ios">{{'editProfile.EditProfile' | translate}}</ion-title>
+    </ion-toolbar>
+  </div>
+</ion-header>
+<ion-content class="ion-padding">
+  <app-image-loader *ngIf="loading"></app-image-loader>
+  <ion-header *ngIf="loading" class="ion-no-border">
+    <div class="header">
+      <ion-toolbar class="ion-no-border">
+        <ion-buttons slot="start" mode="md">
+          <ion-back-button defaultHref=""></ion-back-button>
+        </ion-buttons>
+        <ion-title mode="ios">{{'editProfile.EditProfile' | translate}}</ion-title>
+      </ion-toolbar>
+    </div>
+  </ion-header>
+  <div class="ion-padding">
+  <div class="profile">
+    <ion-avatar>
+      <img
+        [src]="
+      profileImage()
+        ? url + profileImage()
+        : 'assets/img/user.jpg'"
+      />
+    </ion-avatar>
+    <h5 (click)="openCameraOrGallery()">{{'editProfile.ChangeProfilePhoto' | translate}}</h5>
+  </div>
+  <ion-item button lines="full" mode="ios" detail="false">
+    <!-- <ion-icon slot="start" name="mail-outline"></ion-icon> -->
+    <ion-label position="stacked">{{'editProfile.FullName' | translate}}</ion-label>
+    <ion-input
+      type="text"
+      [(ngModel)]="userData.fullName"
+      placeholder="{{'editProfile.EnterYourName' | translate}}"
+    ></ion-input>
+  </ion-item>
+  <ion-button (click)="updateBtn()" mode="md" expand="block" fill="solid">
+    {{'editProfile.Update' | translate}}
+  </ion-button>
+</div>
+</ion-content>

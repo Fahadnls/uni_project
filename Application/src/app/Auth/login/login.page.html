@@ -1,0 +1,73 @@
+<ion-content>
+  <app-image-loader *ngIf="loading"></app-image-loader>
+  <!-- <ion-img src="assets/img/background.png"></ion-img> -->
+  <div class="header"></div>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12">
+        <h1>{{'login.Login' | translate}}</h1>
+        <p>{{'login.PleaseLoginToContinue' | translate}}</p>
+        <!-- <ion-item lines="full" mode="ios" detail="false">
+          <ion-icon slot="start" name="call-outline"></ion-icon>
+          <ion-label position="floating"
+            >{{'login.Phone' | translate}}
+            <small>{{'register.WithCountry' | translate}}</small></ion-label
+          >
+          <ion-input
+            type="tel"
+            placeholder="{{'login.EnterYourPhone' | translate}}"
+            [(ngModel)]="loginData.phoneNumber"
+          ></ion-input>
+        </ion-item> -->
+        <!-- [onlyCountries]="onlyCountries" -->
+        <!-- [preferredCountries]="onlyCountries" -->
+        <form #f="ngForm" [formGroup]="phoneForm">
+          <ngx-intl-tel-input
+            [enablePlaceholder]="true"
+            [searchCountryFlag]="true"
+            [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
+            [selectFirstCountry]="false"
+            [selectedCountryISO]="CountryISO.Pakistan"
+            [maxLength]="13"
+            [phoneValidation]="true"
+            [separateDialCode]="separateDialCode"
+            [numberFormat]="PhoneNumberFormat.National"
+            name="phone"
+            formControlName="phone"
+          >
+          </ngx-intl-tel-input>
+        </form>
+        <ion-button
+          [disabled]="!this.loginData.phoneNumber"
+          (click)="loginBtn()"
+          expand="block"
+          mode="md"
+          fill="solid"
+        >
+          {{'login.Login' | translate}}
+        </ion-button>
+        <ion-button
+          (click)="skipLogin()"
+          class="skip"
+          expand="block"
+          mode="md"
+          fill="clear"
+        >
+          {{'login.SkipLoginToContinue' | translate}}
+        </ion-button>
+        <ion-toolbar class="ion-no-border">
+          <p>
+            {{'login.DontHaveAnAccount' | translate}}
+            <span routerLink="/register">{{'login.SignUp' | translate}}</span>
+          </p>
+        </ion-toolbar>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+<!-- <ion-footer
+  [style.background]="loading? 'rgb(147 147 147)':''"
+  class="ion-no-border"
+>
+
+</ion-footer> -->

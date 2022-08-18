@@ -1,0 +1,29 @@
+<ion-content class="ion-no-padding">
+  <app-image-loader *ngIf="loading"></app-image-loader>
+  <div class="header">
+    <ion-toolbar style="--background: transparent;color: white;" class="ion-no-border">
+      <ion-buttons slot="start" mode="md" (click)="back()">
+        <ion-back-button defaultHref=""></ion-back-button>
+      </ion-buttons>
+      <ion-title mode="ios">{{'otp.OtpVerification' | translate}}</ion-title>
+    </ion-toolbar>
+  </div>
+  <h1>{{'otp.ConfirmTheCode' | translate}}</h1>
+  <p>{{'otp.CodeSendToYourPhoneNo' | translate}}</p>
+  <ion-grid class="ion-no-padding">
+    <ion-row>
+      <ion-col size="12" class="ion-no-padding">
+        <code-input
+          class="otp_input"
+          [codeLength]="6"
+          [isCharsCode]="false"
+          [isCodeHidden]="false"
+          [isPrevFocusableAfterClearing]="true"
+          (codeChanged)="onCodeChanged($event)"
+          (codeCompleted)="onCodeCompleted($event)"
+        >
+        </code-input>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

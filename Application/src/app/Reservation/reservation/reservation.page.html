@@ -1,0 +1,170 @@
+<ion-header class="ion-no-border">
+  <div class="header">
+    <ion-segment value="current" mode="ios" (ionChange)="segment($event)">
+      <ion-segment-button value="current">
+        <ion-label>{{'reservation.Current' | translate}}</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="previous">
+        <ion-label>{{'reservation.Previous' | translate}}</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+</ion-header>
+<ion-content>
+  <ion-grid
+    *ngIf="(!showSkeleton) && (status == 'current'? currentReservation.length == 0:previousReservation.length == 0)"
+    class="emptyLoop"
+    fixed
+  >
+    <ion-row>
+      <ion-col size="12">
+        <ion-icon name="book-outline"></ion-icon>
+        <p>
+          {{'reservation.YouHaveNo' | translate}} {{status == 'previous'?
+          ('reservation.Previous' | translate):'' }}
+          {{'reservation.ReservationYet' | translate}}
+        </p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-card
+    mode="ios"
+    class="ion-no-margin ion-padding-vertical"
+    *ngFor="let item of (status == 'current'?currentReservation:previousReservation);index as i"
+  >
+    <ion-item lines="none">
+      <img [src]="url + item?.restaurant.mainLogo" alt="" />
+      <ion-label class="title">{{item?.restaurant.title}}</ion-label>
+    </ion-item>
+    <!-- <ion-item lines="none" class="item">
+      <ion-label class="item_title"
+        >{{'reservation.Type' | translate}}</ion-label
+      >
+      <p slot="end">{{item.restaurant.type == 'Tea'? 'Coffee':item.restaurant.type}}</p>
+    </ion-item> -->
+    <ion-item lines="none" class="item">
+      <ion-label class="item_title"
+        >{{'reservation.TableNo' | translate}}</ion-label
+      >
+      <p slot="end">{{item?.restaurant_table.tableNumber}}</p>
+    </ion-item>
+    <ion-item lines="none" class="item">
+      <ion-label slot="start" class="item_title"
+        >{{'reservation.Time' | translate}}</ion-label
+      >
+      <p slot="end">
+        {{item?.slotForm | date:'hh:mm a'}} - {{item?.slotTo | date:'hh:mm a'}}
+      </p>
+    </ion-item>
+    <ion-item lines="none" class="item">
+      <ion-label class="item_title"
+        >{{'reservation.Status' | translate}}</ion-label
+      >
+      <!-- chip status translate -->
+      <ion-chip
+        [color]="item.status == 'Completed'?  'success':item.status == 'Reserved'? 'warning':'tertiary'"
+        mode="ios"
+        class="ion-no-margin"
+        outline="true"
+      >
+        <ion-label>{{'reservation.'+item.status | translate}}</ion-label>
+      </ion-chip>
+
+    </ion-item>
+    <ion-item *ngIf="item?.status == 'Cancel'" lines="none" class="item">
+      <ion-label slot="start" class="item_title"
+        >{{'reservation.CancelledBy' | translate}}</ion-label
+      >
+      <p slot="end">{{item.cancelBy == 'user'? ('reservation.User' | translate): ('reservation.Manager' | translate)}}</p>
+    </ion-item>
+    <ion-item lines="none" class="item">
+      <!-- <ion-button
+        slot="start"
+        class="map"
+        color="warning"
+        *ngIf="status == 'current'"
+        fill="outline"
+        color="dark"
+        (click)="makeDirection(item)"
+      >
+        <ion-icon slot="icon-only" name="location-outline"></ion-icon>
+        {{'reservation.MakeARoute' | translate}}
+      </ion-button> -->
+      <ion-button
+        slot="start"
+        class="map"
+        color="warning"
+        *ngIf="(item.status == 'Completed') && (item.rating == 0)"
+        fill="outline"
+        color="dark"
+        routerLink="/rate-us/{{item.id}}/{{item.restaurantId}}"
+      >
+        <ion-icon
+          slot="icon-only"
+          style="margin-right: 9px"
+          name="chatbubble-ellipses-outline"
+        ></ion-icon>
+        {{'reservation.SendFeedback' | translate}}
+      </ion-button>
+      <div slot="start" class="rate" *ngIf="item.rating != 0">
+        <ion-icon [class]="item.rating > 0.5? 'fa checked':'fa'" name="star"></ion-icon>
+        <ion-icon [class]="item.rating > 1.5? 'fa checked':'fa'" name="star"></ion-icon>
+        <ion-icon [class]="item.rating > 2.5? 'fa checked':'fa'" name="star"></ion-icon>
+        <ion-icon [class]="item.rating > 3.5? 'fa checked':'fa'" name="star"></ion-icon>
+        <ion-icon [class]="item.rating > 4.5? 'fa checked':'fa'" name="star"></ion-icon>
+      </div>
+      <ion-button
+        slot="end"
+        class="detail"
+        color="warning"
+        fill="solid"
+        (click)="reservationDetail(i,item)"
+      >
+        {{'reservation.Detail' | translate}}
+      </ion-button>
+    </ion-item>
+  </ion-card>
+  <div *ngIf="showSkeleton">
+    <ion-card
+      mode="ios"
+      class="ion-no-margin ion-padding-vertical"
+      *ngFor="let item of skeleton"
+    >
+      <ion-thumbnail class="imgSkeleton">
+        <ion-skeleton-text animated></ion-skeleton-text>
+      </ion-thumbnail>
+      <ion-item lines="none" class="item">
+        <ion-label class="item_title">
+          <ion-skeleton-text
+            animated
+            style="width: 98%; height: 15px"
+          ></ion-skeleton-text
+        ></ion-label>
+      </ion-item>
+      <ion-item lines="none" class="item">
+        <ion-label class="item_title">
+          <ion-skeleton-text
+            animated
+            style="width: 80%; height: 15px"
+          ></ion-skeleton-text
+        ></ion-label>
+      </ion-item>
+      <ion-item lines="none" class="item">
+        <ion-label slot="start" class="item_title">
+          <ion-skeleton-text
+            animated
+            style="width: 60%; height: 15px"
+          ></ion-skeleton-text
+        ></ion-label>
+      </ion-item>
+      <ion-item lines="none" class="item">
+        <ion-label slot="start" class="item_title">
+          <ion-skeleton-text
+            animated
+            style="width: 45%; height: 15px"
+          ></ion-skeleton-text
+        ></ion-label>
+      </ion-item>
+    </ion-card>
+  </div>
+</ion-content>

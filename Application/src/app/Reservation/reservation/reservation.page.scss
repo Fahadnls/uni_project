@@ -1,0 +1,116 @@
+ion-header {
+  background: #f9f9f9f7 !important;
+  height: 122px;
+  .header {
+    // padding: 9px 9px 0px 9px;
+    ion-segment {
+      padding: 7px 13px;
+      background: rgba(0, 0, 0, 0.03);
+      color: white;
+      border-radius: 13px;
+      ion-segment-button {
+        --color-checked: black !important;
+        text-transform: capitalize;
+      }
+    }
+  }
+}
+ion-content {
+  ion-card {
+    margin: 13px;
+    border-radius: 15px;
+    img {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+      overflow: hidden;
+      border-radius: 13px;
+      filter: brightness(0.7);
+    }
+    .title {
+      white-space: normal;
+      height: 2.5rem;
+      overflow: hidden;
+      margin: auto;
+      position: absolute;
+      display: block;
+      text-align: center;
+      width: 95%;
+      bottom: 3px;
+      color: white;
+    }
+    .item {
+      --inner-padding-end: 17px;
+      // margin-top: 3px;
+    }
+    ion-item {
+      --padding-start: 13px;
+      .item_title {
+        margin: 0;
+        font-weight: 600;
+        color: #4c4c4c;
+      }
+      p {
+        margin: 0;
+        font-size: 15px;
+      }
+      .pending {
+        color: red;
+      }
+      .complete {
+        color: rgb(0, 138, 0);
+      }
+      .map {
+        margin: 0;
+        // width: 90px;
+        height: 33px;
+        --background-activated: #f5c95b;
+        --border-radius: 9px;
+      }
+      .detail {
+        margin: 0;
+        width: 90px;
+        height: 33px;
+        --background-activated: #f5c95b;
+      }
+    }
+  }
+  .emptyLoop {
+    height: 93%;
+    ion-row {
+      height: 100%;
+      ion-col {
+        align-self: center;
+        ion-icon {
+          margin: auto;
+          display: block;
+          font-size: 90px;
+          color: gray;
+        }
+        p {
+          text-align: center;
+          color: gray;
+        }
+      }
+    }
+  }
+  .imgSkeleton {
+    margin: auto;
+    display: block;
+    width: 95%;
+    height: 120px;
+  }
+}
+.rate {
+  text-align: center;
+  margin-bottom: 10px;
+  .fa {
+    color: #959595;
+    font-size: 15px;
+    padding: 0px 2px;
+    margin: auto;
+  }
+  .checked {
+    color: orange;
+  }
+}

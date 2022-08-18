@@ -1,0 +1,46 @@
+<ion-content #content>
+  <div class="header">
+    <h4 style="padding: 15px 15px 15px 20px; margin: auto; color: white">
+      {{'chat.ChatWithAdmin' | translate}}
+    </h4>
+  </div>
+  <div class="ion-padding-horizontal chat">
+    <ion-grid class="ion-no-padding">
+      <ion-row>
+        <ion-col
+          class="ion-no-padding"
+          size="12"
+          *ngFor="let item of messagesArray; index as i"
+        >
+          <div [class]="item.isAdmin ? 'chat_admin' : 'user_it_self'">
+            <p>{{item.messageBody}}</p>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-content>
+<ion-footer class="ion-no-border">
+  <ion-toolbar>
+    <ion-item  modes="ios" lines="none">
+      <ion-textarea
+      [disabled]="isGuestUser()"
+        [(ngModel)]="message"
+        rows="1"
+        autoGrow="true"
+        type="text"
+        placeholder="{{'chat.TypeAMessage' | translate}}"
+      >
+      </ion-textarea>
+      <ion-buttons slot="end" mode="md">
+        <ion-button
+          [disabled]="message == ''"
+          class="send_btn"
+          (click)="sendMessage()"
+        >
+          <ion-icon class="send" slot="icon-only" name="send"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-item>
+  </ion-toolbar>
+</ion-footer>

@@ -1,0 +1,5 @@
+ionic cordova build android --prod --release -- -- --packageType=bundle
+
+jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore withlove.jks app-release.aab withlove
+
+zipalign -v 4 app-release.aab signed.aab

@@ -1,0 +1,141 @@
+<ion-header *ngIf="!loading" class="ion-no-border">
+  <div class="header">
+    <ion-toolbar class="ion-no-border">
+      <ion-buttons slot="start" mode="md">
+        <ion-button (click)="back()">
+          <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-title mode="ios">{{'restaurantTable.BookTable' | translate}}</ion-title>
+    </ion-toolbar>
+  </div>
+</ion-header>
+<ion-content #content [scrollY]="!loading" >
+
+  <app-image-loader *ngIf="loading"></app-image-loader>
+  <ion-header *ngIf="loading" class="ion-no-border">
+    <div class="header">
+      <ion-toolbar class="ion-no-border">
+        <ion-buttons slot="start" mode="md">
+          <ion-button (click)="back()">
+            <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+        <ion-title mode="ios">{{'restaurantTable.BookTable' | translate}}</ion-title>
+      </ion-toolbar>
+    </div>
+  </ion-header>
+  <div class="fullPage ion-padding">
+  <ion-card mode="ios" class="ion-no-margin ion-padding-vertical">
+    <h5>{{'restaurantTable.Reservation' | translate}}</h5>
+    <ion-item
+      class="ion-no-padding"
+      lines="none"
+      button
+      (click)="presentModal()"
+    >
+      <ion-icon
+        slot="start"
+        name="time-outline"
+        class="ion-no-margin"
+      ></ion-icon>
+      <ion-label>
+        <span *ngIf="this.reservationTable.slotForm"
+          >{{this.reservationTable.slotForm | date:'hh:mm a'}} -
+          {{this.reservationTable.slotTo | date:'hh:mm a'}}</span
+        >
+        <span *ngIf="!this.reservationTable.slotForm"> {{'restaurantTable.SelectTime' | translate}} </span>
+      </ion-label>
+    </ion-item>
+    <h6>{{'restaurantDetail.SeatArea' | translate}} </h6>
+    <div class="seat_area">
+      <ion-segment
+        [value]="reservationTable.seatingArea"
+        (ionChange)="seatingArea($event)"
+        mode="ios"
+        class="seatArea"
+        [disabled]="restaurantSeatingArea != 'Any'"
+      >
+        <ion-segment-button value="Inside">
+          <ion-label>{{'restaurantDetail.Inside' | translate}}</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="Any">
+          <ion-label>{{'restaurantDetail.Any' | translate}}</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="Outside">
+          <ion-label>{{'restaurantDetail.Outside' | translate}}</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+    </div>
+    <h6>{{'restaurantTable.Seats' | translate}}</h6>
+    <div class="seat_area">
+      <div class="scroll_menu">
+        <div class="scroll_item">
+          <ion-card
+            mode="ios"
+            button
+            class="seats"
+            *ngFor="let item of seat;index as i"
+            [style.background]="item?.isChecked? 'white' : '' "
+            [style.box-shadow]="item?.isChecked? 'rgb(0 0 0 / 12%) 0px 4px 16px' : 'none' "
+            (click)="selected_seat(i)"
+          >
+            <p>{{item?.seat}}</p>
+          </ion-card>
+        </div>
+      </div>
+    </div>
+    <h6>{{'restaurantTable.Calendar' | translate}} </h6>
+    <div class="seat_area">
+      <div class="scroll_menu">
+        <ion-calendar
+          [(ngModel)]="date"
+          (change)="calender($event)"
+          [type]="type"
+          [format]="'YYYY-MM-DD'"
+        >
+        </ion-calendar>
+      </div>
+    </div>
+    <ion-segment
+    *ngIf="reservationTable.specialEvent"
+      value="regular"
+      class="event"
+      
+      (ionChange)="tableType($event)"
+    >
+      <ion-segment-button value="regular">
+        <ion-label>{{'restaurantTable.Regular' | translate}}</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="special">
+        <ion-label>{{'restaurantTable.Special' | translate}}</ion-label> 
+      </ion-segment-button>
+    </ion-segment>
+    <ion-item  lines="full" mode="ios" detail="false" class="add_notes">
+      <ion-label position="stacked">
+        <b>{{'restaurantTable.AdditionalNote' | translate}} </b>
+      </ion-label>
+      <ion-textarea
+      [(ngModel)]="reservationTable.additionalNote"
+        placeholder="{{'restaurantTable.AdditionalNotePlaceHolder' | translate}}"
+        rows="2"
+      ></ion-textarea>
+    </ion-item>
+  </ion-card>
+  <ion-card mode="ios" class="ion-no-margin ion-padding-vertical">
+    <h5>{{'restaurantTable.Policies' | translate}}</h5>
+    <p class="policy">
+    {{restaurantDetails?.policy}}
+    </p>
+  </ion-card>
+</div>
+</ion-content>
+<ion-footer [style.background]="loading? 'rgb(172 172 172)':''"  class="ion-no-border">
+  <ion-toolbar [style.--background]="loading? 'rgb(172 172 172)':''" class="ion-no-border">
+    <ion-button expand="block" mode="md" [disabled]="loading" fill="solid" (click)="reservedTable()">
+      {{'restaurantTable.ReservedTable' | translate}}
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>
+
+<!-- routerLink="/reserved-table-complete" -->

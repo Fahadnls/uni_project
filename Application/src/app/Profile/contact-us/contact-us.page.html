@@ -1,0 +1,60 @@
+<ion-header *ngIf="!loading" class="ion-no-border">
+  <div class="header">
+    <ion-toolbar class="ion-no-border">
+      <ion-buttons slot="start" mode="md">
+        <ion-back-button defaultHref=""></ion-back-button>
+      </ion-buttons>
+      <ion-title mode="ios">{{'contactUs.ContactUs' | translate}}</ion-title>
+    </ion-toolbar>
+  </div>
+</ion-header>
+
+<ion-content>
+  <app-image-loader *ngIf="loading"></app-image-loader>
+  <ion-header *ngIf="loading" class="ion-no-border">
+    <div class="header">
+      <ion-toolbar class="ion-no-border">
+        <ion-buttons slot="start" mode="md">
+          <ion-back-button defaultHref=""></ion-back-button>
+        </ion-buttons>
+        <ion-title mode="ios">{{'contactUs.ContactUs' | translate}}</ion-title>
+      </ion-toolbar>
+    </div>
+  </ion-header>
+  <div class="ion-padding">
+    <div class="icon">
+      <ion-icon name="mail"></ion-icon>
+    </div>
+    <ion-item button lines="full" mode="ios" detail="false">
+      <!-- <ion-icon slot="start" name="mail-outline"></ion-icon> -->
+      <ion-label position="floating">{{'contactUs.email' | translate}}</ion-label>
+      <ion-input
+        type="text"
+        placeholder="{{'contactUs.EnterYourEmail' | translate}}"
+        [(ngModel)]="contantUs.email"
+      ></ion-input>
+    </ion-item>
+    <ion-item button lines="full" mode="ios" detail="false">
+      <!-- <ion-icon slot="start" name="mail-outline"></ion-icon> -->
+      <ion-label position="floating">{{'contactUs.Subject' | translate}}</ion-label>
+      <ion-input
+        type="text"
+        placeholder="{{'contactUs.EnterSubject' | translate}}"
+        [(ngModel)]="contantUs.subject"
+      ></ion-input>
+    </ion-item>
+    <ion-item button lines="full" mode="ios" detail="false">
+      <!-- <ion-icon slot="start" name="mail-outline"></ion-icon> -->
+      <ion-label position="floating">{{'contactUs.Message' | translate}}</ion-label>
+      <ion-textarea
+        type="Password"
+        placeholder="{{'contactUs.EnterMessage' | translate}}"
+        autoGrow="true"
+        [(ngModel)]="contantUs.message"
+      ></ion-textarea>
+    </ion-item>
+    <ion-button (click)="send()" mode="md" expand="block" fill="solid">
+      {{'contactUs.Send' | translate}}
+    </ion-button>
+  </div>
+</ion-content>

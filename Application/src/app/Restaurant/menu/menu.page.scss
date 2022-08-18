@@ -1,0 +1,27 @@
+.menu{
+    margin-bottom: 20px;
+    --padding-start: 9px;
+ion-img{
+    width: 83px;
+    height: 75px;
+    object-fit: cover;
+    margin-right: 15px;
+    border-radius: 9px;
+    overflow: hidden;;
+}
+ion-label{
+    text-transform: capitalize;
+    white-space: normal;
+    position: relative;
+    top: -11px;
+    p{
+        font-size: 17px;
+    }
+}
+}
+h1{
+    text-transform: capitalize;
+    padding-left: 10px;
+    margin-bottom: 17px;
+    font-weight: bold;
+}

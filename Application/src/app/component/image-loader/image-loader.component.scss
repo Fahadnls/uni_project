@@ -1,0 +1,24 @@
+.loading {
+  margin: auto;
+  display: block;
+  width: 75px;
+  border-radius: 17px;
+  position: absolute;
+  left: 0;
+  top: 45%;
+  transform: translate(-50%, -50%);
+  right: 0;
+  animation-duration: 1.5s;
+  ion-img {
+    width: 75px;
+    height: 75px;
+    object-fit: contain;
+  }
+}
+.content {
+  height: 100%;
+  position: absolute;
+  width: 100%;
+  z-index: 111;
+  background: rgb(0, 0, 0, 0.3);
+}

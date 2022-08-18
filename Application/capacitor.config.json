@@ -1,0 +1,6 @@
+{
+	"appId": "com.withlove.app.dev",
+	"appName": "with love",
+	"webDir": "www",
+	"bundledWebRuntime": false
+}

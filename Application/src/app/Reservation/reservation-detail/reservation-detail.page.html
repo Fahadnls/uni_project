@@ -1,0 +1,91 @@
+<ion-content>
+  <app-image-loader *ngIf="loading"></app-image-loader>
+  <div class="head">
+    <ion-buttons mode="md" slot="start">
+      <ion-button (click)="back()">
+        <ion-icon
+          color="light"
+          slot="icon-only"
+          name="chevron-back-outline"
+        ></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-img [src]="url + reservation?.restaurant.mainLogo"></ion-img>
+    <h4>{{reservation?.restaurant.title}}</h4>
+    <ion-chip
+      [class]="reservation?.status == 'Completed'?  'success ion-no-margin':reservation?.status == 'Reserved'? 'tertiary ion-no-margin':'danger ion-no-margin'"
+      mode="ios"
+      class="ion-no-margin"
+      outline="true"
+    >
+      <ion-label
+        >{{'reservationDetail.'+reservation?.status | translate}}</ion-label
+      >
+    </ion-chip>
+  </div>
+  <ion-card mode="ios" class="ion-no-margin ion-padding-vertical">
+    <p class="id">#{{reservation?.tableBookingCode}}</p>
+    <ion-item lines="none">
+      <ion-label>{{reservation?.restaurant.location}}</ion-label>
+      <ion-buttons slot="end" mode="md">
+        <ion-button (click)="makeDirection()">
+          <ion-icon slot="icon-only" name="location-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-item>
+    <ion-item lines="none" class="data">
+      <ion-label slot="start"
+        >{{'reservationDetail.BookingTime' | translate}}</ion-label
+      >
+      <p mode="ios" slot="end" style="color: black; font-size: 15px">
+        {{reservation?.slotForm | date:'hh:mma'}}-{{reservation?.slotTo |
+        date:'hh:mma'}}
+      </p>
+    </ion-item>
+    <ion-item lines="none" class="data">
+      <ion-label>{{'reservationDetail.TableNo' | translate}}</ion-label>
+      <p slot="end" style="color: black">
+        {{reservation?.restaurant_table.tableNumber}}
+      </p>
+    </ion-item>
+    <ion-item lines="none" class="data">
+      <ion-label>{{'reservationDetail.SeatNo' | translate}}</ion-label>
+      <p slot="end" style="color: black">
+        {{reservation?.restaurant_table.seatingCapacity}}
+      </p>
+    </ion-item>
+    <ion-item lines="none" class="data">
+      <ion-label>{{'reservationDetail.seatArea' | translate}}</ion-label>
+      <p slot="end" style="color: black">{{'reservationDetail.'+reservation?.seatingArea | translate }}</p>
+    </ion-item>
+    <ion-item *ngIf="reservation?.status == 'Cancel'" lines="none" class="data">
+      <ion-label>{{'reservationDetail.CancelBy' | translate}}</ion-label>
+      <p slot="end" style="color: black">
+        {{reservation?.cancelBy == 'user'? ('reservationDetail.User' |
+        translate): ('reservationDetail.Manager' | translate)}}
+      </p>
+    </ion-item>
+
+    <div *ngIf="reservation?.status != 'Cancel'">
+      <h5>{{'reservationDetail.AdditonalNote' | translate}}</h5>
+      <p>{{reservation?.additionalNote}}</p>
+    </div>
+    <div *ngIf="reservation?.status == 'Cancel'">
+      <ion-item lines="none" class="data ion-no-padding">
+        <h5>{{'reservationDetail.CancelReason' | translate}}</h5>
+        <ion-icon slot="end" name="information-circle-outline"></ion-icon>
+      </ion-item>
+      <p>{{reservation?.cancelReason}}</p>
+    </div>
+    <ion-button
+      *ngIf="reservation?.status == 'Reserved'"
+      (click)="cancelRes()"
+      class="cancel"
+      expand="block"
+      mode="md"
+      fill="solid"
+    >
+      {{'reservationDetail.CancelReservation' | translate}}
+    </ion-button>
+  </ion-card>
+</ion-content>

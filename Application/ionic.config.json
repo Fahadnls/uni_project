@@ -1,0 +1,10 @@
+{
+  "name": "with love",
+  "integrations": {
+    "capacitor": {
+      "enabled": false
+    },
+    "cordova": {}
+  },
+  "type": "angular"
+}

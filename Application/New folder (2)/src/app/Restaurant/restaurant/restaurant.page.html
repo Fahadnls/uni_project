@@ -1,0 +1,106 @@
+<ion-header *ngIf="!loading" class="ion-no-border">
+  <div class="header" style="height: 180px;">
+    <ion-toolbar class="ion-no-border">
+      <ion-buttons class="back_btn" slot="start" mode="md">
+        <ion-back-button
+          defaultHref=""
+          icon="chevron-back-outline"
+        ></ion-back-button>
+      </ion-buttons>
+      <ion-searchbar
+        inputmode="search"
+        *ngIf="data.length != 0"
+        placeholder="{{'restaurant.Search' | translate}} {{name == 'tea'? ('restaurant.TeaShop' | translate):('restaurant.Restaurant' | translate)}}"
+        [(ngModel)]="filterVal"
+        mode="ios"
+        type="text"
+        [debounce]="250"
+      ></ion-searchbar>
+    </ion-toolbar>
+  </div>
+</ion-header>
+<ion-content>
+  <app-image-loader *ngIf="loading"></app-image-loader>
+  <ion-header *ngIf="loading" class="ion-no-border">
+    <div class="header">
+      <ion-toolbar class="ion-no-border">
+        <ion-buttons class="back_btn" slot="start" mode="md">
+          <ion-back-button
+            defaultHref=""
+            icon="chevron-back-outline"
+          ></ion-back-button>
+        </ion-buttons>
+        <ion-searchbar
+          inputmode="search"
+          *ngIf="data.length != 0"
+          placeholder="{{'restaurant.Search' | translate}} {{name == 'tea'? ('restaurant.TeaShop' | translate):('restaurant.Restaurant' | translate)}}"
+          inputmode="decimal"
+          [(ngModel)]="filterVal"
+          mode="ios"
+          type="text"
+          [debounce]="250"
+        ></ion-searchbar>
+      </ion-toolbar>
+    </div>
+  </ion-header>
+  <ion-grid *ngIf="restaurant">
+    <ion-row>
+      <ion-col size="6" *ngFor="let item of data | filter:filterVal">
+        <ion-card
+          mode="ios"
+          button
+          routerLink="/restaurant-detail/{{item?.restaurant.id}}"
+          class="ion-no-margin"
+          [style.background]="bgReturner(item?.restaurant?.mainLogo)"
+        >
+          <ion-item class="ion-no-padding" color="transparent" lines="none">
+            <ion-text> {{item?.restaurant?.title}} </ion-text>
+            <p slot="end" class="distance">
+              {{item?.restaurant?.distanceInMeters}}Km
+            </p>
+          </ion-item>
+          <ion-item
+            class="ion-no-padding"
+            lines="none"
+            color="transparent"
+            style="margin-top: 73px"
+          >
+            <h6>{{item?.restaurant?.promotionalText}}</h6>
+            <p slot="end" style="height: auto">
+              <ion-icon
+                *ngIf="item.restaurant.rating != 0"
+                name="star"
+              ></ion-icon
+              >{{item.restaurant.rating? item?.restaurant?.rating :'N/A'}}
+            </p>
+          </ion-item>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-grid class="empty" *ngIf="data.length == 0">
+    <ion-row>
+      <ion-col size="12">
+        <ion-icon
+          [name]="name == 'restaurant'? 'fast-food-outline':'cafe-outline' "
+        ></ion-icon>
+        <p>
+          {{'restaurant.noNear' | translate}} {{name == 'restaurant'? foodType
+          +" " +('restaurant.Restaurant' | translate) : ('restaurant.TeaShop' |
+          translate)}} {{'restaurant.inYourArea' | translate}}
+        </p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <!-- <ion-grid class="empty" *ngIf="emptyRestaurant">
+    <ion-row>
+      <ion-col size="12">
+        <ion-icon name="fast-food-outline"></ion-icon>
+        <p>
+          No near "<span class="ion-text-capitalize">{{foodType}}</span>"
+          Restaurant in your Area
+        </p>
+      </ion-col>
+    </ion-row>
+  </ion-grid> -->
+</ion-content>

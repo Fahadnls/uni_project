@@ -1,0 +1,133 @@
+ion-content {
+  .id {
+    color: black !important;
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0;
+  }
+  .head {
+    padding-top: constant(safe-area-inset-top);
+    padding-top: env(safe-area-inset-top);
+    ion-buttons {
+      position: absolute;
+      left: 5px;
+      background: rgb(0 0 0 / 7%);
+      border-radius: 50%;
+    }
+    ion-img {
+      width: 100%;
+      height: 190px;
+      object-fit: cover;
+      margin: auto;
+      display: block;
+    }
+    h4 {
+      text-align: center;
+      position: relative;
+      top: -70px;
+      background: rgb(0 0 0 / 10%);
+      width: 90%;
+      margin: auto;
+      display: block;
+      padding: 7px;
+      color: white;
+      font-weight: 500;
+      border-radius: 12px;
+    }
+    ion-chip {
+      position: fixed;
+      top: env(safe-area-inset-top);
+      right: 12px;
+    }
+    .danger {
+      color: white;
+      background: #ffc409;
+    }
+    .success {
+      color: white;
+      background: rgb(40, 173, 40);
+    }
+    .tertiary {
+      color: white;
+      background: red;
+    }
+  }
+  ion-card {
+    margin: -25px 13px 13px 13px;
+    border-radius: 17px;
+    color: black;
+    h5 {
+      font-weight: bold;
+      padding-left: 13px;
+      padding-right: 13px;
+    }
+    .data {
+      --padding-top: 0px;
+      --background: #ffffff;
+      --padding-bottom: 0px;
+    }
+    ion-item {
+      --background: #f5f5f5;
+      --padding-top: 9px;
+      --padding-bottom: 9px;
+      ion-label {
+        white-space: normal;
+        font-weight: 500;
+        margin: 0;
+      }
+      p {
+        margin: 0;
+      }
+    }
+    .table_circle {
+      position: relative;
+      width: 40%;
+      padding-bottom: 40%;
+      background: linear-gradient(140deg, #fa4d38, #e22b68);
+      border-radius: 50%;
+      margin: auto;
+      margin-top: 14px;
+      color: rgb(255, 255, 255);
+      margin-bottom: 17px;
+    }
+    .table_circle h3 {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      margin: 0;
+    }
+    ion-grid {
+      background: #f5f5f5;
+      margin: auto;
+      padding: 9px;
+      margin-top: 17px;
+      ion-row {
+        ion-col {
+          h5 {
+            margin-top: 0px;
+            text-align: center;
+          }
+          p {
+            text-align: center;
+            margin: auto;
+            color: black;
+          }
+        }
+      }
+    }
+    p {
+      color: gray;
+      padding: 0px 13px 0px 13px;
+      text-align: justify;
+      line-height: 27px;
+    }
+    .cancel {
+      height: 50px;
+      --background-activated: #f5c95b;
+      --background: linear-gradient(44deg, #fa4d38, #e22b68);
+      --border-radius: 14px;
+      margin: 15px 15px 8px 15px;
+    }
+  }
+}

@@ -1,0 +1,214 @@
+<ion-header
+  *ngIf="restaurantImage"
+  class="animate__animated animate__fadeIn"
+  parallax
+  [imageUrl]="restaurantImage"
+  [maximumHeight]="maxHeight"
+  expandedColor="#AAA"
+  titleColor="white"
+>
+  <ion-toolbar
+    [style.visibility]="logicalToolbar? 'hidden':'visible'"
+    mode="md"
+    color="warning"
+  >
+    <ion-buttons slot="start">
+      <ion-back-button
+        mode="md"
+        icon="chevron-back-outline"
+        defaultHref=""
+        [class]="darkenCondition? 'backBTNCustom':''"
+      ></ion-back-button>
+    </ion-buttons>
+    <ion-title
+      [style.background]="darkenCondition? 'rgb(0, 0, 0, 0.4)':''"
+      mode="md"
+    >
+      <span>{{restaurantDetails?.title}}</span>
+      <br />
+      <span *ngIf="darkenCondition" style="font-size: 14px"
+        >{{restaurantDetails?.promotionalText}}</span
+      >
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-header *ngIf="!restaurantImage" class="animate__animated animate__fadeIn">
+  <ion-toolbar mode="md" color="medium" style="height: 300px">
+    <ion-buttons slot="start">
+      <ion-back-button
+        mode="md"
+        icon="chevron-back-outline"
+        defaultHref=""
+      ></ion-back-button>
+    </ion-buttons>
+    <ion-title mode="md">
+      <span></span>
+      <br />
+      <span style="font-size: 14px"></span>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [scrollEvents]="true" (ionScroll)="onScroll($event)">
+  <ion-card *ngIf="!loading" button mode="ios" class="ion-padding-vertical">
+    <div class="rate" *ngIf="restaurantDetails.feedbacks.length != 0">
+      <ion-icon
+        [class]="restaurantDetails.feedbacks[0].rating > 0.5? 'fa checked':'fa'"
+        name="star"
+      ></ion-icon>
+      <ion-icon
+        [class]="restaurantDetails.feedbacks[0].rating > 1.5? 'fa checked':'fa'"
+        name="star"
+      ></ion-icon>
+      <ion-icon
+        [class]="restaurantDetails.feedbacks[0].rating > 2.5? 'fa checked':'fa'"
+        name="star"
+      ></ion-icon>
+      <ion-icon
+        [class]="restaurantDetails.feedbacks[0].rating > 3.5? 'fa checked':'fa'"
+        name="star"
+      ></ion-icon>
+      <ion-icon
+        [class]="restaurantDetails.feedbacks[0].rating > 4.5? 'fa checked':'fa'"
+        name="star"
+      ></ion-icon>
+      ({{restaurantDetails.feedbacks[0].rateCount}})
+    </div>
+    <div class="rate" *ngIf="restaurantDetails.feedbacks.length == 0">
+      <ion-icon class="fa" name="star"></ion-icon>
+      <ion-icon class="fa" name="star"></ion-icon>
+      <ion-icon class="fa" name="star"></ion-icon>
+      <ion-icon class="fa" name="star"></ion-icon>
+      <ion-icon class="fa" name="star"></ion-icon>
+      (0)
+    </div>
+    <ion-item
+      class="ion-no-padding"
+      [style.--background]="loading? 'rgb(174 174 174)':''"
+      lines="none"
+    >
+      <ion-icon
+        slot="start"
+        name="time-outline"
+        class="ion-no-margin"
+      ></ion-icon>
+      <ion-label>
+        <h3>{{'restaurantDetail.OpeningClosingTiming' | translate}}</h3>
+        <p>
+          {{restaurantDetails?.openingTime}} -
+          {{restaurantDetails?.closingTime}}
+        </p>
+      </ion-label>
+    </ion-item>
+    <ion-item
+      class="ion-no-padding"
+      lines="none"
+      [style.--background]="loading? 'rgb(174 174 174)':''"
+    >
+      <ion-icon
+        slot="start"
+        name="location-outline"
+        class="ion-no-margin"
+      ></ion-icon>
+      <ion-label>
+        <h3>{{'restaurantDetail.Location' | translate}}</h3>
+        <p>{{restaurantDetails?.location}}</p>
+      </ion-label>
+      <ion-buttons slot="end" mode="md" class="ion-no-margin">
+        <ion-button (click)="makeDirection()">
+          <ion-icon slot="icon-only" name="navigate-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-item>
+    <h6>{{'restaurantDetail.SeatArea' | translate}}</h6>
+    <div class="seat_area">
+      <ion-segment [value]="restaurantDetails.seatingArea" mode="ios">
+        <ion-segment-button
+          [style.--background]="loading? 'rgb(174 174 174)':''"
+          [disabled]="restaurantDetails.seatingArea != 'Inside'"
+          value="Inside"
+        >
+          <ion-label>{{'restaurantDetail.Inside' | translate}}</ion-label>
+        </ion-segment-button>
+        <ion-segment-button
+          [style.--background]="loading? 'rgb(174 174 174)':''"
+          [disabled]="restaurantDetails.seatingArea != 'Any'"
+          value="Any"
+        >
+          <ion-label>{{'restaurantDetail.Any' | translate}}</ion-label>
+        </ion-segment-button>
+        <ion-segment-button
+          [style.--background]="loading? 'rgb(174 174 174)':''"
+          [disabled]="restaurantDetails.seatingArea != 'Outside'"
+          value="Outside"
+        >
+          <ion-label>{{'restaurantDetail.Outside' | translate}}</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+    </div>
+  </ion-card>
+  <div *ngIf="!loading" class="scroll_menu">
+    <div class="scroll_item" *ngFor="let item of images;index as i;">
+      <ion-card mode="ios" (click)="imageView(i)" button>
+        <ion-img [src]="url + item.imageUrl"></ion-img>
+      </ion-card>
+    </div>
+  </div>
+  <ion-card *ngIf="loading" button mode="ios" class="ion-padding-vertical">
+    <div class="rate">
+      <ion-skeleton-text
+        animated
+        style="width: 55%; margin: auto"
+      ></ion-skeleton-text>
+    </div>
+    <ion-item class="ion-no-padding" lines="none">
+      <ion-label>
+        <h3>
+          <ion-skeleton-text animated style="width: 35%"></ion-skeleton-text>
+        </h3>
+        <p>
+          <ion-skeleton-text animated style="width: 95%"></ion-skeleton-text>
+        </p>
+      </ion-label>
+    </ion-item>
+    <ion-item class="ion-no-padding" lines="none">
+      <ion-label>
+        <h3>
+          <ion-skeleton-text animated style="width: 35%"></ion-skeleton-text>
+        </h3>
+        <p>
+          <ion-skeleton-text animated style="width: 95%"></ion-skeleton-text>
+        </p>
+      </ion-label>
+    </ion-item>
+  </ion-card>
+  <div *ngIf="loading" class="scroll_menu">
+    <div class="scroll_item" *ngFor="let item of skeletonImage;index as i;">
+      <ion-card mode="ios" button>
+        <ion-thumbnail class="imgSkeleton">
+          <ion-skeleton-text animated></ion-skeleton-text>
+        </ion-thumbnail>
+      </ion-card>
+    </div>
+  </div>
+  <div *ngIf="loading" class="Description">
+    <h5><ion-skeleton-text animated style="width: 35%"></ion-skeleton-text></h5>
+    <p><ion-skeleton-text animated style="width: 95%"></ion-skeleton-text></p>
+    <p><ion-skeleton-text animated style="width: 95%"></ion-skeleton-text></p>
+    <p><ion-skeleton-text animated style="width: 95%"></ion-skeleton-text></p>
+    <p><ion-skeleton-text animated style="width: 95%"></ion-skeleton-text></p>
+    <p><ion-skeleton-text animated style="width: 95%"></ion-skeleton-text></p>
+    <p><ion-skeleton-text animated style="width: 95%"></ion-skeleton-text></p>
+  </div>
+  <div *ngIf="!loading" class="Description">
+    <h5>{{'restaurantDetail.Description' | translate}}</h5>
+    <p>{{restaurantDetails?.description}}</p>
+  </div>
+</ion-content>
+<ion-footer class="ion-no-border">
+  <ion-toolbar class="ion-no-border">
+    <ion-button expand="block" mode="md" fill="solid" (click)="bookTable()">
+      {{'restaurantDetail.BookTable' | translate}}
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

@@ -1,0 +1,72 @@
+<ion-content >
+    <ion-button mode="md" (click)="back()" class="close">
+      <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+    </ion-button>
+  <ion-grid fixed>
+    <ion-row>
+      <ion-col size="12">
+        <h1 mode="ios">{{'rateUs.RateUs' | translate}}</h1>
+        <h5>{{'rateUs.RateUs' | translate}} <b>Restaurant Name</b></h5>
+        <ion-slides #slides pager="false" [options]="slideOpts" scroll-y="false">
+          <!-- <img src="../../assets/img/great emoji.png" alt=""> -->
+          <ion-slide>
+            <ion-card class="ion-no-margin ion-padding-vertical"> </ion-card>
+          </ion-slide>
+          <ion-slide>
+            <ion-card class="ion-no-margin ion-padding-vertical">
+              <ion-img src="assets/img/terrible emoji.png"></ion-img>
+              <h5>{{'rateUs.Terrible' | translate}}</h5>
+            </ion-card>
+          </ion-slide>
+          <ion-slide>
+            <ion-card class="ion-no-margin ion-padding-vertical">
+              <ion-img src="assets/img/bad emoji.png"></ion-img>
+              <h5>{{'rateUs.Bad' | translate}}</h5>
+            </ion-card>
+          </ion-slide>
+          <ion-slide>
+            <ion-card class="ion-no-margin ion-padding-vertical">
+              <ion-img src="assets/img/natural emoji.png"></ion-img>
+              <h5>{{'rateUs.Okay' | translate}}</h5>
+            </ion-card>
+          </ion-slide>
+          <ion-slide>
+            <ion-card class="ion-no-margin ion-padding-vertical">
+              <ion-img src="assets/img/good emoji.png"></ion-img>
+              <h5>{{'rateUs.Good' | translate}}</h5>
+            </ion-card>
+          </ion-slide>
+          <ion-slide>
+            <ion-card class="ion-no-margin ion-padding-vertical">
+              <ion-img src="assets/img/great emoji.png"></ion-img>
+              <h5>{{'rateUs.Great' | translate}}</h5>
+            </ion-card>
+          </ion-slide>
+          <ion-slide>
+            <ion-card class="ion-no-margin ion-padding-vertical"> </ion-card>
+          </ion-slide>
+        </ion-slides>
+        <ion-item button lines="full" mode="ios" detail="false" class="add_notes">
+          <section>
+            <ion-label slot="start" position="stacked">
+              <b>{{'rateUs.Feedback' | translate}}</b>
+            </ion-label>
+            <p slot="end" class="ion-no-margin"><small>{{'rateUs.Optional' | translate}}</small></p>
+          </section>
+          <ion-textarea
+          [(ngModel)]="ratingData.feedback"
+            placeholder="Enter your feedback About restaurant"
+            rows="2"
+          ></ion-textarea>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+<ion-footer class="ion-no-border">
+  <ion-toolbar class="ion-no-border">
+    <ion-button (click)="submit()" expand="block" mode="md" fill="solid">
+      {{'rateUs.SendFeedback' | translate}}
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

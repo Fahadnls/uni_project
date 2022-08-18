@@ -1,0 +1,46 @@
+<ion-content>
+  <ion-grid class="ion-no-padding">
+    <ion-row>
+      <ion-col size="12" class="ion-no-padding">
+        <div class="header">
+          <ion-item lines="none" color="transparent">
+            <!-- <ion-buttons slot="start" mode="md" class="ion-no-margin">
+              <ion-back-button defaultHref=""></ion-back-button>
+            </ion-buttons> -->
+            <ion-label>
+              <h1 class="ion-text-capitalize">
+                {{'teaAndRestaurant.hi' | translate}} {{user?.fullName}}
+              </h1>
+              <p>{{'teaAndRestaurant.WhereYouWantToGo' | translate}}</p>
+            </ion-label>
+            <!-- <ion-avatar slot="end">
+              <img src="assets/icon/person_white.jpeg" />
+            </ion-avatar> -->
+          </ion-item>
+          <!-- <h2 class="ion-no-margin">Select your food type </h2> -->
+        </div>
+        <ion-slides mode="ios" [options]="slideOpts" pager="ios">
+          <ion-slide *ngFor="let item of ads;">
+            <ion-card class="card" (click)="imageView(item)">
+              <ion-img [src]="url +  item?.image"></ion-img>
+            </ion-card>
+          </ion-slide>
+        </ion-slides>
+        <ion-card mode="ios" button routerLink="/home">
+          <ion-img src="assets/img/restaurantother.png"></ion-img>
+          <!-- <h5>Restaurant</h5> -->
+        </ion-card>
+        <div
+          class="center"
+          style="width: 80%; margin-bottom: 20px !important; margin: auto"
+        >
+          <!-- <div class="divider-line-x"><span>or</span></div> -->
+        </div>
+        <ion-card mode="ios" button routerLink="/restaurant/noId/tea/null">
+          <ion-img src="assets/img/tea.png"></ion-img>
+          <!-- <h5>Tea</h5> -->
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

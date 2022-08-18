@@ -1,0 +1,52 @@
+<div class="inner-content">
+  <div class="head">
+    <ion-icon class="logo" slot="icon-only" name="time-outline"></ion-icon>
+    <ion-item lines="none">
+      <ion-label>{{'timeSelection.StartTime' | translate}}</ion-label>
+      <ion-datetime
+        [(ngModel)]="timeBetween.openingTime"
+        mode="ios"
+        display-format="h:mm A"
+        placeholder="{{'timeSelection.selectTime' | translate}}"
+      ></ion-datetime>
+    </ion-item>
+    <ion-item lines="none">
+      <ion-label>{{'timeSelection.EndTime' | translate}}</ion-label>
+      <ion-datetime
+        [(ngModel)]="timeBetween.closingTime"
+        mode="ios"
+        display-format="h:mm A"
+        placeholder="{{'timeSelection.selectTime' | translate}}"
+      ></ion-datetime>
+    </ion-item>
+    <ion-grid fixed>
+      <ion-row>
+        <ion-col size="6">
+          <ion-button
+            class="calenderBtn"
+            expand="block"
+            color="warning"
+            fill="outline"
+            outline="true"
+            mode="md"
+            (click)="close()"
+          >
+            <ion-icon name="close-outline"></ion-icon>
+            {{'timeSelection.close' | translate}}
+          </ion-button>
+        </ion-col>
+        <ion-col size="6">
+          <ion-button
+            class="continueBtn"
+            (click)="confirm()"
+            expand="block"
+            fill="solid"
+            mode="md"
+          >
+          {{'timeSelection.Continue' | translate}}
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</div>

@@ -1,0 +1,30 @@
+.head {
+  .logo {
+    font-size: 85px;
+    margin: auto;
+    display: block;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    color: gray;
+  }
+  ion-item {
+    --background: #e1e1e1;
+    margin-top: 7px;
+  }
+  padding-top: 15px;
+  padding-bottom: 30px;
+}
+.continueBtn {
+  height: 50px;
+  --background: linear-gradient(44deg, #fa4d38, #e22b68);
+  --border-radius: 14px;
+}
+.calenderBtn {
+  ion-icon {
+    margin-right: 13px;
+    color: #ec3953;
+    font-size: 23px;
+  }
+  height: 50px;
+  --border-radius: 14px;
+}

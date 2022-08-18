@@ -1,0 +1,139 @@
+ion-content {
+  position: relative;
+  top: -1px;
+  ion-grid {
+    margin-top: 7px;
+    ion-row {
+      ion-col {
+        ion-card {
+          color: black;
+          border-radius: 16px;
+          // margin: 20px auto;
+          // background-image: url("https://static.onecms.io/wp-content/uploads/sites/9/2020/04/24/ppp-why-wont-anyone-rescue-restaurants-FT-BLOG0420.jpg");
+          margin-bottom: 0px;
+          height: 170px;
+          width: 100%;
+          // ion-img {
+          //   margin: auto;
+          //   display: block;
+          //   width: 100%;
+          //   // height: 232px;
+          //   object-fit: cover;
+          // }
+
+          ion-item {
+            --inner-padding-end: 0;
+            --padding-start: 7px;
+            margin-top: 4px;
+            margin-bottom: 4px;
+            color: white;
+            ion-text {
+              // font-weight: bold;
+              height: 2.7rem;
+              overflow: hidden;
+              white-space: normal;
+              line-height: 21px;
+            }
+            .distance {
+              font-size: 12px;
+              color: rgb(255, 255, 255);
+            }
+            p {
+              margin: 0px 9px 0px 7px;
+              height: 2.5rem;
+              overflow: hidden;
+              white-space: normal;
+              ion-icon {
+                position: relative;
+                top: 1px;
+              }
+            }
+          }
+          h6 {
+            margin: 0;
+            height: 2.5rem;
+            overflow: hidden;
+            white-space: normal;
+          }
+          ion-icon {
+            color: orange;
+          }
+
+          .card_content {
+            margin: auto;
+            ion-row {
+              ion-col {
+                align-self: center;
+                h6 {
+                  text-transform: capitalize;
+                  margin: auto;
+                  font-weight: bold;
+                }
+                .distance {
+                  position: relative;
+                  float: right;
+                  font-size: 12px;
+                }
+                p {
+                  margin: auto;
+                  color: #5e5e5e;
+                  overflow: hidden;
+                  line-height: 1rem;
+                  text-transform: capitalize;
+                }
+                .fa {
+                  position: relative;
+                  float: right;
+                  font-size: 35px;
+                  p {
+                    font-size: 11px;
+                    color: black;
+                    margin: 0;
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                  }
+                }
+                .checked {
+                  color: orange;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+.detail {
+  position: absolute;
+  bottom: -7px;
+}
+
+ion-searchbar {
+  margin-top: 13px;
+  zoom: 88%;
+}
+.back_btn {
+  margin-top: 3px;
+}
+.empty {
+  height: 85%;
+  ion-row {
+    height: 100%;
+    ion-col {
+      align-self: center;
+      ion-icon {
+        margin: auto;
+        display: block;
+        font-size: 90px;
+        color: gray;
+      }
+      p {
+        text-align: center;
+        color: gray;
+      }
+    }
+  }
+}
