@@ -11,6 +11,8 @@ module.exports = (sequelize, type) => {
         password: type.STRING,
         profileImage: type.STRING,
         phoneNumber: type.STRING,
+        CNIC: type.STRING,
+        Address: type.STRING,
         isBlocked: {
             type: type.BOOLEAN,
             defaultValue: false,

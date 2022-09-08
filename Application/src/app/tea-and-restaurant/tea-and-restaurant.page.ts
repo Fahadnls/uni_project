@@ -4,6 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { environment } from 'src/environments/environment';
 import { RestaurantService } from 'src/services/restaurant.service';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 
 @Component({
   selector: 'app-tea-and-restaurant',
@@ -38,6 +39,7 @@ export class TeaAndRestaurantPage implements OnInit {
     public translateService: TranslateService,
     public foodTypeService: RestaurantService,
     public photoViewer: PhotoViewer,
+    public androidPermissions : AndroidPermissions ,
     private geolocation: Geolocation
   ) {}
 
@@ -56,7 +58,8 @@ export class TeaAndRestaurantPage implements OnInit {
       }
     );
     this.user = JSON.parse(localStorage.getItem('userData'));
-    this.getLocationAndNearbyRestaurantsOrTeaShops();
+    this.askPermission();
+
   }
   bgReturner(img) {
     return (
@@ -71,21 +74,59 @@ export class TeaAndRestaurantPage implements OnInit {
       this.restaurantData.latitude = resp.coords.latitude;
       this.restaurantData.longitude = resp.coords.longitude;
       this.restaurantData.FoodTypeId = this.foodId;
-      this.foodTypeService.Restaurant(this.restaurantData).subscribe(
-        (resp: any) => {
-          this.data = resp;
-          // console.log( resp)
+     this.callApi()
+    });
+  }
+  callApi
+  (){
+    this.foodTypeService.Restaurant(this.restaurantData).subscribe(
+      (resp: any) => {
+        this.data = resp;
+        // console.log( resp)
 
-          setTimeout(() => {
-            this.showSkeleton = true;
-            this.loading = false;
-          }, 800);
-        },
-        (err) => {
+        setTimeout(() => {
           this.showSkeleton = true;
           this.loading = false;
-        }
+        }, 800);
+      },
+      (err) => {
+        this.showSkeleton = true;
+        this.loading = false;
+      }
+    );
+  }
+  askPermission() {
+    this.androidPermissions
+      .checkPermission(this.androidPermissions.PERMISSION.ACCESS_FINE_LOCATION)
+      .then(
+        (result) => {
+          if (result.hasPermission) {
+            // code
+            this.getLocationAndNearbyRestaurantsOrTeaShops();
+            this.showSkeleton = true;
+            this.loading = false;
+          } else {
+            this.androidPermissions
+              .requestPermission(
+                this.androidPermissions.PERMISSION.ACCESS_FINE_LOCATION
+              )
+              .then((result) => {
+                if (result.hasPermission) {
+                  // code
+                  this.showSkeleton = true;
+                  this.loading = false;
+                  this.getLocationAndNearbyRestaurantsOrTeaShops();
+                }
+              });
+          }
+        },
+        (err) =>{
+          this.restaurantData.latitude = 0;
+          this.restaurantData.longitude = 0;
+          this.showSkeleton = true;
+          this.loading = false;
+          this.callApi()
+          }
       );
-    });
   }
 }

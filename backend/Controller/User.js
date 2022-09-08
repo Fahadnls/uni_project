@@ -9,9 +9,8 @@ module.exports = {
         try {
             const {
                 fullName,
-                // password,
-                // email,
-                // profileImage,
+                CNIC,
+                Address,
                 phoneNumber,
             } = req.body;
 
@@ -32,17 +31,19 @@ module.exports = {
                 //         .status(http_status_codes.StatusCodes.NOT_ACCEPTABLE)
                 //         .json({ error: "Password should be greater than 6 characters!" });
                 // } else {
-                    const user = await User.create({
-                        fullName: fullName,
-                        // profileImage: profileImage,
-                        phoneNumber: phoneNumber,
-                        // email: email,
-                        // password: hashedPassword.generate(password),
-                    });
-                    return res.status(http_status_codes.StatusCodes.CREATED).json({
-                        message: "Account successfully Created",
-                        user: user,
-                    });
+                const user = await User.create({
+                    fullName: fullName,
+                    // profileImage: profileImage,
+                    phoneNumber: phoneNumber,
+                    CNIC: CNIC,
+                    Address: Address,
+                    // email: email,
+                    // password: hashedPassword.generate(password),
+                });
+                return res.status(http_status_codes.StatusCodes.CREATED).json({
+                    message: "Account successfully Created",
+                    user: user,
+                });
                 // }
             }
         } catch (error) {
@@ -58,7 +59,8 @@ module.exports = {
         try {
             const {
                 email,
-                phoneNumber
+                phoneNumber,
+
             } = req.body;
 
             const user = await User.findOne({
@@ -70,10 +72,10 @@ module.exports = {
                 // const verify_password = hashedPassword.verify(password, user.password);
                 // if (verify_password) {
 
-                    return res.status(http_status_codes.StatusCodes.OK).json({
-                        message: "successfully login",
-                        user: user,
-                    });
+                return res.status(http_status_codes.StatusCodes.OK).json({
+                    message: "successfully login",
+                    user: user,
+                });
                 // } 
                 // else {
                 //     return res.status(http_status_codes.StatusCodes.UNAUTHORIZED).json({
@@ -145,9 +147,9 @@ module.exports = {
                     //     email: email,
                     // },
                     // {
-                        phoneNumber: phoneNumber,
+                    phoneNumber: phoneNumber,
                     // }
-                // ]
+                    // ]
                 }
             })
 
@@ -254,11 +256,15 @@ module.exports = {
             const {
                 fullName,
                 profileImage,
+                CNIC,
+                Address,
             } = req.body;
 
             const updateUser = await User.update({
                 fullName: fullName,
                 profileImage: profileImage,
+                CNIC :CNIC,
+                Address :Address,
             },
                 {
                     where: {
@@ -347,7 +353,7 @@ module.exports = {
                 });
         }
     },
-    async UserBlock (req, res, next) {
+    async UserBlock(req, res, next) {
         try {
             const userId = req.params.userId;
 
@@ -372,7 +378,7 @@ module.exports = {
             email,
         } = req.body;
 
-        const user = await User .findOne({
+        const user = await User.findOne({
             where: {
                 email: email
             }

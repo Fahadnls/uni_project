@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  baseurl: 'http://192.168.1.103:3000/',
+  baseurl: 'http://192.168.43.39:3000/',
   firebaseConfig : {
     apiKey: "AIzaSyDadl-BqjgU_BQlLrplKaq3qqj9_5e4jos",
     authDomain: "restaurantapp-7e42c.firebaseapp.com",

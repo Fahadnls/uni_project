@@ -54,7 +54,10 @@ export class CustomerComponent implements OnInit {
     this.loading =true
     this.userService.all_user().subscribe((data: any) => {
       this.originalProductsData = data.slice(0);
-      this.loading =false
+      setTimeout(() => {
+        
+        this.loading =false
+      }, 1000);
       this.update();
      },err =>{
        this.loading = false;

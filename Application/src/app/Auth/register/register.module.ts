@@ -10,7 +10,6 @@ import { RegisterPage } from './register.page';
 import { ImageComponentModule } from 'src/app/component/component.module';
 import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
 import { TranslateModule } from '@ngx-translate/core';
-
 @NgModule({
   imports: [
     CommonModule,
@@ -19,6 +18,7 @@ import { TranslateModule } from '@ngx-translate/core';
     NgxIntlTelInputModule,
     ReactiveFormsModule,
     IonicModule,
+    FormsModule,
     TranslateModule,
     RegisterPageRoutingModule,
   ],

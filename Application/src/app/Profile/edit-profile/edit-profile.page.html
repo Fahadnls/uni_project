@@ -41,6 +41,29 @@
       placeholder="{{'editProfile.EnterYourName' | translate}}"
     ></ion-input>
   </ion-item>
+  <ion-item lines="full" mode="ios" detail="false">
+    <ion-icon slot="start" name="card-outline"></ion-icon>
+    <ion-label position="floating"
+      >CNIC Number</ion-label
+    >
+    <ion-input
+    type="text"
+      data-inputmask="'mask': '99999-9999999-9'"  placeholder="XXXXX-XXXXXXX-X"
+      [(ngModel)]="userData.CNIC"
+    ></ion-input>
+    
+  </ion-item>
+  <ion-item lines="full" mode="ios" detail="false">
+    <ion-icon slot="start" name="location-outline"></ion-icon>
+    <ion-label position="floating"
+      >Addresss</ion-label
+    >
+    <ion-input
+      type="text"
+      [(ngModel)]="userData.Address"
+      placeholder="Enter your Address"
+    ></ion-input>
+  </ion-item>
   <ion-button (click)="updateBtn()" mode="md" expand="block" fill="solid">
     {{'editProfile.Update' | translate}}
   </ion-button>

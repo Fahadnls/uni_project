@@ -80,6 +80,8 @@
               [ngClass]="'ion-md-arrow-' + (sortDesc ? 'down' : 'up')"
             ></i>
           </th>
+          <th class="text-nowrap cursor-pointer">CNIC Number</th>
+          <th class="text-nowrap cursor-pointer">Address</th>
           <!-- <th class="text-nowrap cursor-pointer" (click)="setSort('email')">
             email<i
               class="ion text-muted ml-2"
@@ -132,6 +134,8 @@
           </td>
           <!-- <td class="align-middle py-2">{{ item?.email }}</td> -->
           <td class="align-middle py-2">{{ item?.phoneNumber }}</td>
+          <td class="align-middle py-2">{{ item?.CNIC }}</td>
+          <td class="align-middle py-2">{{ item?.Address }}</td>
           <td class="align-middle py-2">
             {{ item?.createdAt | date: "mediumDate" }}
           </td>

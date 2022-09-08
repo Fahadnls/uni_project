@@ -13,6 +13,7 @@ import {
   CountryISO,
   PhoneNumberFormat,
 } from 'ngx-intl-tel-input';
+
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 @Component({
   selector: 'app-register',
@@ -36,8 +37,8 @@ export class RegisterPage implements OnInit {
 
   registerData = {
     fullName: '',
-    // password: '',
-    // email: '',
+    CNIC: '',
+    Address: '',
     phoneNumber: '',
   };
   windowRef: any;
@@ -78,23 +79,31 @@ export class RegisterPage implements OnInit {
   loading = false;
   async registerBtn() {
     this.loading = true;
-    await this.register.emailExist(this.registerData).subscribe(
-      (resp: any) => {
-        if (resp) {
-          this.tool.presentToast(
-            this.dataError.EmailOrPhoneNumberIsAlreadyExistPleaseTryOther,
-            'danger',
-            'bottom'
-          );
+    if (
+      (this.registerData.fullName &&
+        this.registerData.CNIC &&
+        this.registerData.Address) == ''
+    ) {
+      this.tool.presentToast('please fill all field', 'danger', 'top');
+    } else {
+      await this.register.emailExist(this.registerData).subscribe(
+        (resp: any) => {
+          if (resp) {
+            this.tool.presentToast(
+              this.dataError.EmailOrPhoneNumberIsAlreadyExistPleaseTryOther,
+              'danger',
+              'bottom'
+            );
+            this.loading = false;
+          } else {
+            this.otpSender();
+          }
+        },
+        (err) => {
           this.loading = false;
-        } else {
-          this.otpSender();
         }
-      },
-      (err) => {
-        this.loading = false;
-      }
-    );
+      );
+    }
   }
 
   async otpVerificationModal(refConfirm) {

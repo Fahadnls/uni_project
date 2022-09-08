@@ -43,6 +43,7 @@
     "@ngx-translate/core": "^14.0.0",
     "@ngx-translate/http-loader": "^7.0.0",
     "angular-code-input": "^1.5.0",
+    "angular2-text-mask": "^9.0.0",
     "animate.css": "^4.1.1",
     "cordova-plugin-file-transfer": "^1.7.1",
     "firebase": "^7.20.0",

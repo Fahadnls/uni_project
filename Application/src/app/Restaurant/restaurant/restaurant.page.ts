@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { RestaurantService } from 'src/services/restaurant.service';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 
 @Component({
   selector: 'app-restaurant',
@@ -30,6 +31,7 @@ export class RestaurantPage implements OnInit {
   constructor(
     public restaurantService: RestaurantService,
     public active: ActivatedRoute,
+    public androidPermissions: AndroidPermissions,
     private geolocation: Geolocation
   ) {}
 
@@ -48,30 +50,22 @@ export class RestaurantPage implements OnInit {
     this.foodId = this.active.snapshot.params.id;
     this.name = this.active.snapshot.params.name;
     this.foodType = this.active.snapshot.params.type;
-    this.getLocationAndNearbyRestaurantsOrTeaShops();
+    this.askPermission();
   }
   async getLocationAndNearbyRestaurantsOrTeaShops() {
     await this.geolocation.getCurrentPosition().then((resp) => {
       this.restaurantData.latitude = resp.coords.latitude;
       this.restaurantData.longitude = resp.coords.longitude;
       this.restaurantData.FoodTypeId = this.foodId;
-      if (this.name == 'restaurant') {
-        this.restaurantService
-          .allRestaurantByFoodType(this.restaurantData)
-          .subscribe(
-            (resp: any) => {
-              this.data = resp;
-
-              setTimeout(() => {
-                this.loading = false;
-              }, 800);
-            },
-            (err) => {
-              this.loading = false;
-            }
-          );
-      } else {
-        this.restaurantService.Restaurant(this.restaurantData).subscribe(
+     this.callApi()
+    });
+  }
+  callApi
+  (){
+    if (this.name == 'restaurant') {
+      this.restaurantService
+        .allRestaurantByFoodType(this.restaurantData)
+        .subscribe(
           (resp: any) => {
             this.data = resp;
 
@@ -83,7 +77,50 @@ export class RestaurantPage implements OnInit {
             this.loading = false;
           }
         );
-      }
-    });
+    } else {
+      this.restaurantService.Restaurant(this.restaurantData).subscribe(
+        (resp: any) => {
+          this.data = resp;
+
+          setTimeout(() => {
+            this.loading = false;
+          }, 800);
+        },
+        (err) => {
+          this.loading = false;
+        }
+      );
+    }
+  }
+  askPermission() {
+    this.androidPermissions
+      .checkPermission(this.androidPermissions.PERMISSION.ACCESS_FINE_LOCATION)
+      .then(
+        (result) => {
+          if (result.hasPermission) {
+            // code
+            this.loading = false;
+            this.getLocationAndNearbyRestaurantsOrTeaShops();
+          } else {
+            this.androidPermissions
+              .requestPermission(
+                this.androidPermissions.PERMISSION.ACCESS_FINE_LOCATION
+              )
+              .then((result) => {
+                if (result.hasPermission) {
+                  // code
+                  this.loading = false;
+                  this.getLocationAndNearbyRestaurantsOrTeaShops();
+                }
+              });
+          }
+        },
+        (err) =>{
+          this.restaurantData.latitude = 0;
+          this.restaurantData.longitude = 0;
+          this.loading = false;
+          this.callApi()
+          }
+      );
   }
 }

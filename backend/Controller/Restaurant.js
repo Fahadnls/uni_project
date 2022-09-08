@@ -313,7 +313,7 @@ module.exports = {
                         unit: 'meters',
                     })
                     var distanceInMeters = dist.substr(0, dist.indexOf(' '));
-                    if (distanceInMeters < (24000000 * 1000)) {  // TODO! need to change when require searchInKm
+                    if (distanceInMeters < (10 * 1000)) {  // TODO! need to change when require searchInKm
                         var teaShopObj = {
                             "id": teaType.id,
                             "foodTypeId": teaType.foodTypeId,

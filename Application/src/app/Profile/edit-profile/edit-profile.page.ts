@@ -7,7 +7,13 @@ import { EventEmitterService } from 'src/services/event-emitter.service';
 import { ImageUploaderService } from 'src/services/image-uploader.service';
 import { ProfileService } from 'src/services/profile.service';
 import { ToolService } from 'src/services/tool.service';
-
+import { createTextMaskInputElement } from 'text-mask-core';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  FormControl,
+} from '@angular/forms';
 @Component({
   selector: 'app-edit-profile',
   templateUrl: './edit-profile.page.html',
@@ -18,7 +24,9 @@ export class EditProfilePage implements OnInit {
   url = environment.baseurl;
   userData = {
     fullName: '',
+    Address: '',
     profileImage: '',
+    CNIC: '',
   };
   ProfileImage = '';
   loading= false;
@@ -28,6 +36,7 @@ export class EditProfilePage implements OnInit {
     public user: ProfileService,
     public tool: ToolService,
     public NavController: NavController,
+    public form: FormBuilder,
     public translateService: TranslateService,
     ) {
       translateService.get('dataSuccess').subscribe((resp: any) => {
@@ -39,12 +48,13 @@ export class EditProfilePage implements OnInit {
     }
     dataSuccess: any;
     dataError: any;
-
+   
+    // prettier-ignore
+   
   ngOnInit() {}
   ionViewWillEnter() {
     this.Id = JSON.parse(localStorage.getItem('userId'));
     this.userData = JSON.parse(localStorage.getItem('userData'));
- 
     this.eventEmitterService.invokeFirstComponentFunction.subscribe(
       (value: any) => {
         this.userData.profileImage = value;
